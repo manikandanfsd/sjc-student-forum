@@ -1,0 +1,17 @@
+.align-middle {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.nodata {
+  color: grey;
+}
+
+.no-data-img {
+  width: 250px;
+  margin-bottom: 10px;
+}

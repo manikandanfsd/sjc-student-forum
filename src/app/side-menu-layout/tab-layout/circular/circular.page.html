@@ -1,0 +1,131 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title size="large" color="light"><b>SJC Student Forum</b></ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon
+            size="large"
+            slot="icon-only"
+            name="menu-outline"
+          ></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+  <!-- <img
+    src="https://img.freepik.com/free-vector/noisy-big-megaphone_74855-7630.jpg?w=1380&t=st=1674942845~exp=1674943445~hmac=2f181d5c89c39d0a9392fa4b3c1d0790d281226c0a475d5cae8ce6a942a5ffef"
+    alt=""
+    srcset=""
+  /> -->
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" edge="false">
+    <ion-fab-button>
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <!-- <img
+    src="https://img.freepik.com/free-vector/bloggers-advertising-referrals-young-people-with-gadgets-loudspeakers-announcing-news-attracting-target-audience-vector-illustration-marketing-promotion-communication_74855-8244.jpg?w=1380&t=st=1674943662~exp=1674944262~hmac=2ea043a42c20a9b6c51abe8da28dd1540ef572e41a218b33941d9beaab762c86"
+    alt=""
+    srcset=""
+  /> -->
+  <img
+    src="https://img.freepik.com/free-photo/attention-announcement-concept-enthusiastic-asian-girl-shouting-megaphone-advertising-with-speaker-recruiting-standing-pink-background_1258-96611.jpg?w=1380&t=st=1675026162~exp=1675026762~hmac=5dc7024814f1567c4f08f23ed9262d1c9bc32e5bec34f9a48d98182572d36369"
+    alt=""
+    srcset=""
+  />
+
+  <ion-grid>
+    <ion-row class="ion-align-items-center ion-justify-content-between">
+      <ion-col><h3>Recent Circular</h3></ion-col>
+      <ion-col class="align-right">
+        <ion-button fill="clear" class="btn">
+          <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+          View all</ion-button
+        >
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <swiper [pagination]="true" [autoplay]="true" [zoom]="true">
+    <ng-template swiperSlide>
+      <ion-card>
+        <ion-item>
+          <ion-avatar slot="start">
+            <img
+              alt="Silhouette of a person's head"
+              src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1674944057~exp=1674944657~hmac=16008259e38ecbbc2f8c0d52273ff3f1d149a72ad03332261e5c7d2038961c1b"
+            />
+          </ion-avatar>
+          <ion-label>
+            <h2>Arumai Selvan (HOD)</h2>
+            <p>29/01/2022 11.00 AM</p>
+          </ion-label>
+        </ion-item>
+        <img
+          alt="Silhouette of mountains"
+          src="https://img.freepik.com/free-vector/hiring-agency-human-resources-isometric-landing_107791-2463.jpg?w=1060&t=st=1675006893~exp=1675007493~hmac=795aca5c2486273e85147c2765a1d56a649ed4ea5b8c4e87867bd1563087f9d3"
+        />
+
+        <ion-card-content style="text-align: left">
+          Hi Students , A seminar is a form of academic instruction, either at
+          an academic institution or offered by a commercial or professional
+          organization.
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
+    <ng-template swiperSlide>
+      <ion-card>
+        <ion-item>
+          <ion-avatar slot="start">
+            <img
+              alt="Silhouette of a person's head"
+              src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1674944057~exp=1674944657~hmac=16008259e38ecbbc2f8c0d52273ff3f1d149a72ad03332261e5c7d2038961c1b"
+            />
+          </ion-avatar>
+          <ion-label>
+            <h2>Arumai Selvan (HOD)</h2>
+            <p>29/01/2022 11.00 AM</p>
+          </ion-label>
+        </ion-item>
+        <img
+          alt="Silhouette of mountains"
+          src="https://img.freepik.com/free-vector/awareness-campaign-landing-page-social-marketing-business-concept-with-man-woman-characters-promoting-online-networks-using-laptop-megaphone-public-affairs-line-art-flat-vector-web-banner_107791-10772.jpg?w=1380&t=st=1675026546~exp=1675027146~hmac=79a7603b18e69cd232d7aa758beb483c8989300a0fe42ee5e69b374d57b0f04a"
+        />
+        <ion-card-content style="text-align: left">
+          Hi Students , A seminar is a form of academic instruction, either at
+          an academic institution or offered by a commercial or professional
+          organization.
+        </ion-card-content>
+        <br /> </ion-card
+    ></ng-template>
+    <ng-template swiperSlide>
+      <ion-card>
+        <ion-item>
+          <ion-avatar slot="start">
+            <img
+              alt="Silhouette of a person's head"
+              src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1674944057~exp=1674944657~hmac=16008259e38ecbbc2f8c0d52273ff3f1d149a72ad03332261e5c7d2038961c1b"
+            />
+          </ion-avatar>
+          <ion-label>
+            <h2>Arumai Selvan (HOD)</h2>
+            <p>29/01/2022 11.00 AM</p>
+          </ion-label>
+        </ion-item>
+        <img
+          alt="Silhouette of mountains"
+          src="https://img.freepik.com/free-psd/public-relations-web-template_23-2148896210.jpg?w=1380&t=st=1675026771~exp=1675027371~hmac=536a159a09e7ad1e7030d3ed33f3809f32d723d12efa5f08d70bd1101f7f177d"
+        />
+
+        <ion-card-content style="text-align: left">
+          Hi Students , A seminar is a form of academic instruction, either at
+          an academic institution or offered by a commercial or professional
+          organization.
+        </ion-card-content>
+        <br /> </ion-card
+    ></ng-template>
+  </swiper>
+</ion-content>

@@ -1,0 +1,61 @@
+<ion-content>
+  <div class="login-container">
+    <div class="banner-image">
+      <img src="assets/Computer login-bro (1).svg" />
+    </div>
+    <div>
+      <h2>Login into your account</h2>
+
+      <div class="row-space">
+        <ion-item fill="outline" shape="round">
+          <ion-label position="floating">Email</ion-label>
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-input
+            size="small"
+            placeholder="Enter email"
+            [clearOnEdit]="true"
+          ></ion-input>
+        </ion-item>
+      </div>
+      <div class="row-space">
+        <ion-item fill="outline" shape="round">
+          <ion-label position="floating">Password</ion-label>
+          <ion-icon name="key-outline" slot="start"></ion-icon>
+          <ion-icon
+            (click)="handlePasswordToggle()"
+            name="{{passwordVisibility ? 'eye-outline' : 'eye-off-outline'}}"
+            slot="end"
+          ></ion-icon>
+          <ion-input
+            size="small"
+            type="{{passwordVisibility ? 'password' : 'text'}}"
+            placeholder="Enter Password"
+            [clearOnEdit]="true"
+          ></ion-input>
+        </ion-item>
+      </div>
+      <div class="row-space">
+        <ion-button
+          size="large"
+          shape="round"
+          expand="full"
+          routerLink="/tab-layout"
+          >Login
+          <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
+        </ion-button>
+      </div>
+      <div class="row-space">
+        <ion-button
+          size="large"
+          shape="round"
+          expand="full"
+          fill="outline"
+          routerLink="/startup"
+        >
+          <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
+          Back
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>
