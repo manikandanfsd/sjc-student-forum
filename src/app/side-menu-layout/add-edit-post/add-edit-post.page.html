@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Add New Post</ion-title>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/menu-layout/tab-layout/home">
+        <ion-icon
+          size="large"
+          slot="icon-only"
+          name="arrow-back-outline"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button class="btn" color="light" (click)="isPreviewVisible=true">
+        <ion-icon slot="icon-only" name="newspaper-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item fill="outline">
+    <ion-label position="floating">Title</ion-label>
+    <ion-input
+      type="text"
+      placeholder="Enter text"
+      [clearInput]="true"
+    ></ion-input>
+  </ion-item>
+  <br />
+  <quill-editor
+    [(ngModel)]="myPostContent"
+    [sanitize]="true"
+    [format]="'json'"
+    [theme]="'snow'"
+    [readOnly]="false"
+    [style]="{'height':'250px'}"
+  >
+  </quill-editor>
+</ion-content>
+
+<ion-modal trigger="open-modal" [isOpen]="isPreviewVisible">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Post Preview </ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="isPreviewVisible=false">
+            <ion-icon size="large" slot="icon-only" name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content color="light">
+      <!-- <quill-view-html [content]="myPostContent" theme="snow"></quill-view-html> -->
+      <quill-view
+        [content]="myPostContent"
+        format="json"
+        theme="snow"
+      ></quill-view>
+    </ion-content>
+  </ng-template>
+</ion-modal>

@@ -7,10 +7,22 @@ const routes: Routes = [
   {
     path: '',
     component: SideMenuLayoutPage,
-    loadChildren: () =>
-      import('./tab-layout/tab-layout.module').then(
-        (m) => m.TabLayoutPageModule
-      ),
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./tab-layout/tab-layout.module').then(
+            (m) => m.TabLayoutPageModule
+          ),
+      },
+      {
+        path: 'add-edit-post',
+        loadChildren: () =>
+          import('./add-edit-post/add-edit-post.module').then(
+            (m) => m.AddEditPostPageModule
+          ),
+      },
+    ],
   },
 ];
 

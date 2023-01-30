@@ -9,6 +9,11 @@ export class SideMenuLayoutPage implements OnInit {
   public appPages = [
     // { title: 'Switch Theme', url: '/folder/Inbox', icon: 'contrast' },xs
     {
+      title: 'Home',
+      url: '/menu-layout/tab-layout/home',
+      icon: 'home',
+    },
+    {
       title: 'My Feeds',
       url: '/menu-layout/tab-layout/Outbox',
       icon: 'newspaper',

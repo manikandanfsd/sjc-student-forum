@@ -15,6 +15,16 @@
   width: 100%;
 }
 
+.post-banner-bg {
+  height: 220px;
+  // max-height: 220px;
+  width: 100%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .post-content {
   padding: 0 10px;
 }
