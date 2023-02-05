@@ -1,0 +1,43 @@
+// createUserWithEmailAndPassword(
+    //   this.auth,
+    //   'test@gmail.com',
+    //   '12334678'
+    // ).then(
+    //   (res) => {
+    //     console.log(res, 'ress');
+    //   },
+    //   (err) => {
+    //     console.log(err, 'err');
+    //   }
+    // );
+    // signInWithEmailAndPassword("test@gmail.com",'123')
+    // const userRef = collection(this.firestore, 'users');
+    // const whereCond = query(userRef, where('role', '==', 'ADMIN'));
+    // collectionData(whereCond, { idField: 'id' }).subscribe((res) => {
+    //   console.log(res, 'ress');
+    // });
+    // collectionData(whereCond, { idField: 'id' })
+    //   .pipe(take(1))
+    //   .subscribe((res) => {
+    //     console.log(res, 'ress');
+    //     // res.forEach((item: any) => {
+    //     //   console.log(item.id, 'item');
+    //     //   const docRef = doc(this.firestore, 'users/' + item.id);
+    //     //   updateDoc(docRef, {
+    //     //     role: 'ADMIN',
+    //     //   });
+    //     // });
+    //   });
+    // const docRef = doc(this.firestore, 'users/00fuFyOyd5RGhNLwnuID');
+    // addDoc(userRef, {
+    //   name: 'mani',
+    //   email: 'mani@gmail.com',
+    //   role: 'ADMIN',
+    // });
+    // getDoc()
+    // updateDoc(docRef, {
+    //   department: 'CS',
+    //   designation: 'Staff',
+    //   email: 'test@gmail.com',
+    //   name: 'Manikandn',
+    // });

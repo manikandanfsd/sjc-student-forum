@@ -3,23 +3,24 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'startup',
+    pathMatch: 'full',
+  },
+  {
     path: 'startup',
     loadChildren: () =>
       import('./startup/startup.module').then((m) => m.StartupPageModule),
   },
   {
-    path: 'student-login',
+    path: 'login',
     loadChildren: () =>
-      import('./student-login/student-login.module').then(
-        (m) => m.StudentLoginPageModule
-      ),
+      import('./login/login.module').then((m) => m.LoginPageModule),
   },
   {
-    path: 'staff-login',
+    path: 'register',
     loadChildren: () =>
-      import('./staff-login/staff-login.module').then(
-        (m) => m.StaffLoginPageModule
-      ),
+      import('./register/register.module').then((m) => m.RegisterPageModule),
   },
   {
     path: 'menu-layout',
@@ -27,18 +28,6 @@ const routes: Routes = [
       import('./side-menu-layout/side-menu-layout.module').then(
         (m) => m.SideMenuLayoutPageModule
       ),
-  },
-  // {
-  //   path: 'tab-layout',
-  //   loadChildren: () =>
-  //     import('./tab-layout/tab-layout.module').then(
-  //       (m) => m.TabLayoutPageModule
-  //     ),
-  // },
-  {
-    path: '',
-    redirectTo: 'startup',
-    pathMatch: 'full',
   },
   {
     path: 'side-menu-layout',

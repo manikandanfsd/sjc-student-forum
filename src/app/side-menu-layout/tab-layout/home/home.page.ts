@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
+import { Storage } from '@ionic/storage-angular';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
+  userInfo: any = {};
   postList: any = [];
-  constructor() {
+  constructor(private storage: Storage) {
     this.postList = [
       {
         title: '',
@@ -36,5 +37,10 @@ export class HomePage {
         postContent: '',
       },
     ];
+  }
+  ngOnInit() {
+    this.storage.get('userInfo').then((res: any) => {
+      this.userInfo = res;
+    });
   }
 }

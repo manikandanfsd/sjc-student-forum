@@ -14,8 +14,8 @@
               />
             </ion-avatar>
             <ion-label>
-              <h2>Shobana V</h2>
-              <p>A20CSEA27</p>
+              <h2>{{userInfo.name}}</h2>
+              <p>{{userInfo.idNo || 'no-id-no'}}</p>
             </ion-label>
             <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
           </ion-item>
@@ -25,14 +25,17 @@
     <ion-content>
       <ion-list id="inbox-list">
         <ion-list-header>Welcome back !</ion-list-header>
-        <ion-note class="ion-padding">a20csea27@sjctnc.edu.in</ion-note>
+        <ion-note class="ion-padding"
+          >{{userInfo.email || 'no-email@info.com'}}</ion-note
+        >
         <ion-menu-toggle
           auto-hide="false"
           *ngFor="let p of appPages; let i = index"
         >
           <ion-item
+            button
             routerDirection="root"
-            [routerLink]="[p.url]"
+            (click)="handleAction(p.url)"
             lines="none"
             detail="false"
             routerLinkActive="selected"

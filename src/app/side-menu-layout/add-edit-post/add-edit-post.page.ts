@@ -6,8 +6,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-edit-post.page.scss'],
 })
 export class AddEditPostPage implements OnInit {
-  myPostContent: any;
+  title: any;
+  description: any;
   isPreviewVisible: boolean = false;
+
+  bgColors = [
+    'linear-gradient(to right, #fa709a 0%, #fee140 100%)',
+    'linear-gradient(to right, #6a11cb 0%, #2575fc 100%)',
+    'linear-gradient(to right, #11998e, #38ef7d)',
+    'linear-gradient(to top, #00c6fb 0%, #005bea 100%)',
+    'linear-gradient(to top, #9795f0 0%, #fbc8d4 100%)',
+    'linear-gradient(to top, #ff0844 0%, #ffb199 100%)',
+    'linear-gradient(to top, #0fd850 0%, #f9f047 100%)',
+    'linear-gradient(-225deg, #3D4E81 0%, #5753C9 48%, #6E7FF3 100%)',
+  ];
+  selectedColor = this.bgColors[0];
   // myPostContent: any = {
   //   ops: [
   //     { insert: 'Welcome to Studnet Forum' },

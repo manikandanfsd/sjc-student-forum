@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { StatusBar, Style } from '@capacitor/status-bar';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-startup',
@@ -7,10 +9,17 @@ import { StatusBar, Style } from '@capacitor/status-bar';
   styleUrls: ['./startup.page.scss'],
 })
 export class StartupPage implements OnInit {
-  constructor() {}
+  constructor(private storage: Storage, private router: Router) {}
 
   ngOnInit() {
-    StatusBar.setStyle({ style: Style.Light });
-    StatusBar.setBackgroundColor({ color: '#ffffff' });
+    this.storage.get('userInfo').then((res: any) => {
+      if (res) {
+        this.router.navigate(['/menu-layout']);
+      }
+    });
+    if (StatusBar) {
+      StatusBar.setStyle({ style: Style.Light });
+      StatusBar.setBackgroundColor({ color: '#ffffff' });
+    }
   }
 }

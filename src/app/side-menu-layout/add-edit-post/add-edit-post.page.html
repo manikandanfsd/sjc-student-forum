@@ -20,24 +20,47 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <p><ion-label>Select Theme</ion-label></p>
+  <div class="bg-container">
+    <div
+      *ngFor="let bg of bgColors"
+      class="bg-picker"
+      [ngStyle]="{background: bg}"
+      (click)="this.selectedColor=bg"
+    ></div>
+  </div>
+  <br />
   <ion-item fill="outline">
     <ion-label position="floating">Title</ion-label>
     <ion-input
       type="text"
+      [(ngModel)]="title"
       placeholder="Enter text"
       [clearInput]="true"
     ></ion-input>
   </ion-item>
   <br />
+  <ion-label>Description</ion-label>
   <quill-editor
-    [(ngModel)]="myPostContent"
+    [(ngModel)]="description"
     [sanitize]="true"
-    [format]="'json'"
+    [format]="'html'"
     [theme]="'snow'"
     [readOnly]="false"
     [style]="{'height':'250px'}"
   >
   </quill-editor>
+
+  <br />
+  <br />
+  <ion-button
+    class="btn-lg"
+    shape="round"
+    size="large"
+    expand="full"
+    color="primary"
+    >Save</ion-button
+  >
 </ion-content>
 
 <ion-modal trigger="open-modal" [isOpen]="isPreviewVisible">
@@ -55,8 +78,8 @@
     <ion-content color="light">
       <!-- <quill-view-html [content]="myPostContent" theme="snow"></quill-view-html> -->
       <quill-view
-        [content]="myPostContent"
-        format="json"
+        [content]="description"
+        format="html"
         theme="snow"
       ></quill-view>
     </ion-content>

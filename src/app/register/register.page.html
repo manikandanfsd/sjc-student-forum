@@ -1,0 +1,129 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title> Register </ion-title>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/startup">
+        <ion-icon
+          size="large"
+          slot="icon-only"
+          name="arrow-back-outline"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <form [formGroup]="registerForm" novalidate>
+    <div class="row-space">
+      <ion-item fill="outline" shape="square">
+        <ion-label position="floating">User Type</ion-label>
+        <ion-icon name="people-outline" slot="start"></ion-icon>
+        <ion-select
+          interface=""
+          formControlName="role"
+          placeholder="Select User Type"
+          required
+        >
+          <ion-select-option value="STAFF">Staff</ion-select-option>
+          <ion-select-option value="STUDENT">Student</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </div>
+    <div class="row-space">
+      <ion-item fill="outline" shape="square">
+        <ion-label position="floating">Name</ion-label>
+        <ion-icon name="person-outline" slot="start"></ion-icon>
+        <ion-input
+          required
+          formControlName="name"
+          type="text"
+          placeholder="Enter name"
+          [clearOnEdit]="true"
+        ></ion-input>
+      </ion-item>
+    </div>
+    <div class="row-space">
+      <ion-item fill="outline" shape="square">
+        <ion-label position="floating">ID No</ion-label>
+        <ion-icon name="id-card-outline" slot="start"></ion-icon>
+        <ion-input
+          formControlName="idNo"
+          type="text"
+          placeholder="Enter ID No"
+          [clearOnEdit]="true"
+        ></ion-input>
+      </ion-item>
+    </div>
+    <div class="row-space">
+      <ion-item fill="outline" shape="square">
+        <ion-label position="floating">Email</ion-label>
+        <ion-icon name="mail-outline" slot="start"></ion-icon>
+        <ion-input
+          formControlName="email"
+          type="email"
+          placeholder="Enter email"
+          [clearOnEdit]="true"
+        ></ion-input>
+      </ion-item>
+    </div>
+    <div class="row-space">
+      <ion-item fill="outline" shape="square">
+        <ion-label position="floating">Password</ion-label>
+        <ion-icon name="key-outline" slot="start"></ion-icon>
+        <ion-icon
+          (click)="handlePasswordToggle()"
+          name="{{passwordVisibility ? 'eye-outline' : 'eye-off-outline'}}"
+          slot="end"
+        ></ion-icon>
+        <ion-input
+          formControlName="password"
+          type="{{passwordVisibility ? 'text' : 'password'}}"
+          placeholder="Enter Password"
+          [clearOnEdit]="true"
+        ></ion-input>
+      </ion-item>
+    </div>
+    <div class="row-space">
+      <ion-item fill="outline" shape="square">
+        <ion-label position="floating">Designation</ion-label>
+        <ion-icon name="briefcase-outline" slot="start"></ion-icon>
+        <ion-input
+          formControlName="designation"
+          type="text"
+          placeholder="Enter name"
+          [clearOnEdit]="true"
+        ></ion-input>
+      </ion-item>
+    </div>
+    <div class="row-space">
+      <ion-item fill="outline" shape="square">
+        <ion-label position="floating">Department</ion-label>
+        <ion-icon name="ribbon-outline" slot="start"></ion-icon>
+        <ion-select
+          formControlName="department"
+          interface=""
+          placeholder="Select User Type"
+        >
+          <ion-select-option value="Computer Science"
+            >Computer Science</ion-select-option
+          >
+          <ion-select-option value="Computer Application"
+            >Computer Application</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+    </div>
+    <div class="row-space">
+      <ion-button
+        color="primary"
+        class="btn-lg"
+        size="large"
+        shape="round"
+        expand="full"
+        (click)="submitForm()"
+        >Join with us
+        <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+      </ion-button>
+    </div>
+  </form>
+</ion-content>
