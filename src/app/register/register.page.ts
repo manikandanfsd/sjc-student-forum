@@ -12,16 +12,7 @@ import { AuthService } from '../services/auth.service';
 export class RegisterPage implements OnInit {
   passwordVisibility: boolean = false;
   loadingInst: any;
-  registerForm: FormGroup = this.formBuilder.group({
-    role: ['', [Validators.required]],
-    name: ['', [Validators.required]],
-    idNo: ['', [Validators.required]],
-    email: ['', [Validators.required]],
-    isActive: [false, [Validators.required]],
-    designation: ['', [Validators.required]],
-    department: ['', [Validators.required]],
-    password: ['', [Validators.required]],
-  });
+  registerForm!: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,7 +20,18 @@ export class RegisterPage implements OnInit {
     private loadingCtrl: LoadingController,
     private toastController: ToastController,
     private router: Router
-  ) {}
+  ) {
+    this.registerForm = this.formBuilder.group({
+      role: ['', [Validators.required]],
+      name: ['', [Validators.required]],
+      idNo: ['', [Validators.required]],
+      email: ['', [Validators.required]],
+      isActive: [false, [Validators.required]],
+      designation: ['', [Validators.required]],
+      department: ['', [Validators.required]],
+      password: ['', [Validators.required]],
+    });
+  }
 
   ngOnInit() {}
 
@@ -64,7 +66,7 @@ export class RegisterPage implements OnInit {
       this.showLoading();
       this.authService.register(this.registerForm.value).then((result) => {
         this.loadingInst.dismiss();
-        this.router.navigateByUrl('/login');
+        this.router.navigate(['/login']);
         this.presentToast();
       });
     }

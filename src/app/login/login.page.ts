@@ -15,10 +15,7 @@ export class LoginPage implements OnInit {
   email: string = '';
   password: string = '';
   loadingInst: any;
-  loginForm: FormGroup = this.formBuilder.group({
-    email: ['', [Validators.required]],
-    password: ['', [Validators.required]],
-  });
+  loginForm!: FormGroup;
   constructor(
     private authService: AuthService,
     private loadingCtrl: LoadingController,
@@ -26,7 +23,12 @@ export class LoginPage implements OnInit {
     private router: Router,
     private storage: Storage,
     private formBuilder: FormBuilder
-  ) {}
+  ) {
+    this.loginForm = this.formBuilder.group({
+      email: ['', [Validators.required]],
+      password: ['', [Validators.required]],
+    });
+  }
 
   ngOnInit() {}
 
@@ -52,22 +54,27 @@ export class LoginPage implements OnInit {
     this.loginForm.markAllAsTouched();
     this.loginForm.updateValueAndValidity();
     if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
       this.showLoading();
-      this.authService
-        .login(this.email, this.password)
-        .subscribe((result: any) => {
-          this.loadingInst.dismiss();
-          if (result && result.length > 0) {
-            this.storage.set('userInfo', {
-              name: result[0].name,
-              email: result[0].email,
-              role: result[0].role,
-            });
-            this.router.navigate(['/menu-layout']);
-          } else {
-            this.presentAlert();
-          }
-        });
+      this.authService.login(email, password).subscribe(async (result: any) => {
+        this.loadingInst.dismiss();
+        if (result && result.length > 0) {
+          await this.storage.set('userInfo', {
+            name: result[0].name,
+            email: result[0].email,
+            role: result[0].role,
+            idNo: result[0].idNo,
+            id: result[0].id,
+          });
+          this.loginForm.reset();
+          this.router.navigate([
+            '/menu-layout',
+            { state: { timestamp: new Date().toTimeString() } },
+          ]);
+        } else {
+          this.presentAlert();
+        }
+      });
     }
   }
 

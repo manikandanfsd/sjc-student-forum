@@ -11,56 +11,82 @@
       </ion-button>
     </ion-buttons>
 
-    <ion-buttons slot="end">
+    <!-- <ion-buttons slot="end">
       <ion-button class="btn" color="light" (click)="isPreviewVisible=true">
         <ion-icon slot="icon-only" name="newspaper-outline"></ion-icon>
       </ion-button>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <p><ion-label>Select Theme</ion-label></p>
-  <div class="bg-container">
-    <div
-      *ngFor="let bg of bgColors"
-      class="bg-picker"
-      [ngStyle]="{background: bg}"
-      (click)="this.selectedColor=bg"
-    ></div>
-  </div>
-  <br />
-  <ion-item fill="outline">
-    <ion-label position="floating">Title</ion-label>
-    <ion-input
-      type="text"
-      [(ngModel)]="title"
-      placeholder="Enter text"
-      [clearInput]="true"
-    ></ion-input>
-  </ion-item>
-  <br />
-  <ion-label>Description</ion-label>
-  <quill-editor
-    [(ngModel)]="description"
-    [sanitize]="true"
-    [format]="'html'"
-    [theme]="'snow'"
-    [readOnly]="false"
-    [style]="{'height':'250px'}"
-  >
-  </quill-editor>
+  <form [formGroup]="postForm">
+    <p><ion-label>Select Theme</ion-label></p>
+    <div class="bg-container">
+      <div
+        *ngFor="let bg of bgColors"
+        class="bg-picker"
+        [ngClass]="{active:bg===selectedColor}"
+        [ngStyle]="{background: bg}"
+        (click)="selectBgColor(bg)"
+      ></div>
+    </div>
+    <br />
+    <ion-item fill="outline">
+      <ion-label position="floating">Title</ion-label>
+      <ion-textarea
+        placeholder="Enter title"
+        [autoGrow]="true"
+        formControlName="title"
+      >
+      </ion-textarea>
+    </ion-item>
+    <br />
+    <ion-label>Description</ion-label>
+    <quill-editor
+      [modules]="editorConfig"
+      formControlName="description"
+      [sanitize]="true"
+      [format]="'json'"
+      [theme]="'snow'"
+      [readOnly]="false"
+      [style]="{'height':'250px'}"
+    >
+    </quill-editor>
 
-  <br />
-  <br />
-  <ion-button
-    class="btn-lg"
-    shape="round"
-    size="large"
-    expand="full"
-    color="primary"
-    >Save</ion-button
-  >
+    <br />
+    <br />
+    <ion-row>
+      <ion-col>
+        <ion-button
+          class="btn-lg"
+          shape="round"
+          size="large"
+          expand="full"
+          color="primary"
+          (click)="previewPost()"
+        >
+          <ion-icon slot="start" name="newspaper-outline"></ion-icon>
+          Preview
+        </ion-button></ion-col
+      >
+      <ion-col
+        ><ion-button
+          class="btn-lg"
+          shape="round"
+          size="large"
+          expand="full"
+          color="success"
+          (click)="savePost()"
+        >
+          <ion-icon slot="start" name="save-outline"></ion-icon>
+          Save</ion-button
+        ></ion-col
+      >
+    </ion-row>
+
+    <br />
+  </form>
 </ion-content>
 
 <ion-modal trigger="open-modal" [isOpen]="isPreviewVisible">
@@ -75,11 +101,18 @@
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
-    <ion-content color="light">
+    <ion-content>
+      <div
+        class="post-banner-bg"
+        [ngStyle]="{background: this.postForm.value?.bgColor}"
+      >
+        <h2>{{this.postForm.value.title}}</h2>
+      </div>
+
       <!-- <quill-view-html [content]="myPostContent" theme="snow"></quill-view-html> -->
       <quill-view
-        [content]="description"
-        format="html"
+        [content]="this.postForm.value.description"
+        format="json"
         theme="snow"
       ></quill-view>
     </ion-content>

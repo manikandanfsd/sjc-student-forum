@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { SideMenuLayoutPageRoutingModule } from './side-menu-layout-routing.module';
+import { MyFeedsPageRoutingModule } from './my-feeds-routing.module';
 
-import { SideMenuLayoutPage } from './side-menu-layout.page';
+import { MyFeedsPage } from './my-feeds.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SideMenuLayoutPageRoutingModule,
+    MyFeedsPageRoutingModule
   ],
-  declarations: [SideMenuLayoutPage],
+  declarations: [MyFeedsPage]
 })
-export class SideMenuLayoutPageModule {}
+export class MyFeedsPageModule {}

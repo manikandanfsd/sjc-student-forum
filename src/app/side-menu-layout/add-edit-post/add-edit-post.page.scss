@@ -1,7 +1,8 @@
 .bg-picker {
-  min-width: 50px;
-  min-height: 50px;
-  border-radius: 10px;
+  min-width: 40px;
+  min-height: 40px;
+  border-radius: 50px;
+  border: 4px solid whitesmoke;
 }
 
 .bg-container {
@@ -10,4 +11,25 @@
   gap: 10px;
   flex-wrap: nowrap;
   overflow: auto;
+}
+
+.active {
+  border: 0px solid whitesmoke;
+  content: "0";
+}
+
+.post-banner-bg {
+  height: 220px;
+  // max-height: 220px;
+  width: 100%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 15px;
+
+  h2 {
+    overflow-y: hidden;
+    max-height: -webkit-fill-available;
+  }
 }

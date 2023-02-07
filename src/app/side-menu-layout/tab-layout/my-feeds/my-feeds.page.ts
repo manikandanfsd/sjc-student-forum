@@ -5,14 +5,14 @@ import { Storage } from '@ionic/storage-angular';
 import { take } from 'rxjs';
 
 @Component({
-  selector: 'app-saved-post',
-  templateUrl: './saved-post.page.html',
-  styleUrls: ['./saved-post.page.scss'],
+  selector: 'app-my-feeds',
+  templateUrl: './my-feeds.page.html',
+  styleUrls: ['./my-feeds.page.scss'],
 })
-export class SavedPostPage implements OnInit {
+export class MyFeedsPage implements OnInit {
   userInfo: any = {};
   loadingInst: any;
-  savedPostList: any = [];
+  myPosts: any = [];
 
   constructor(
     private storage: Storage,
@@ -33,14 +33,14 @@ export class SavedPostPage implements OnInit {
     this.storage.get('userInfo').then((res: any) => {
       this.userInfo = res;
       this.postService
-        .getSavedPostByUser(this.userInfo.id)
+        .getPostByUserId(this.userInfo.id)
         .pipe(take(1))
         .subscribe((result) => {
-          this.savedPostList = result;
+          console.log(result, 'result');
+          this.myPosts = result;
           this.loadingInst.dismiss();
         });
     });
   }
-
   ngOnInit() {}
 }

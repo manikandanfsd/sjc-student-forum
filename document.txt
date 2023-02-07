@@ -41,3 +41,49 @@
     //   email: 'test@gmail.com',
     //   name: 'Manikandn',
     // });
+
+
+
+    cordova-res android --skip-config --copy
+
+    ionic capacitor run android --l --external
+
+    ionic capacitor build android
+
+
+Ionic lifecycle
+
+https://ionicframework.com/docs/angular/lifecycle?_gl=1*b22nlw*_ga*MTkzMzkzMzM4LjE2NzIwNTc1MTc.*_ga_REH9TJF6KF*MTY3NTcwNDgyMC40MS4xLjE2NzU3MDQ5MjUuMC4wLjA.
+
+
+
+  ionViewDidEnter() {
+    console.log('enterned in login page');
+  }
+
+  ionViewDidLeave() {}
+
+
+
+  https://cssgradient.io/gradient-backgrounds/
+
+  https://cssgradient.io/swatches/
+
+
+
+  const postRef = collection(this.firestore, 'posts');
+    const first = query(postRef, orderBy('postedOn'), limit(5));
+    const documentSnapshots = await getDocs(first);
+    const lastVisible =
+      documentSnapshots.docs[documentSnapshots.docs.length - 1];
+    const queryObj = query(
+      postRef,
+      orderBy('postedOn', 'desc'),
+      startAfter(lastVisible),
+      limit(5)
+    );
+    collectionData(queryObj).subscribe((result) => {
+      console.log(result, 'result');
+      event.target.complete();
+      
+    });

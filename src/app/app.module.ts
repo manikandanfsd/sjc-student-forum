@@ -21,7 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     IonicModule.forRoot(),
     AppRoutingModule,
     IonicStorageModule.forRoot({
-      name: '__mydb',
+      name: '__sjcStudentForum',
       driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage],
     }),
     provideFirebaseApp(() => initializeApp(environment.firebase)),

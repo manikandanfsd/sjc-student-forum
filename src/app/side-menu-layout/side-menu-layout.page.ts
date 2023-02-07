@@ -17,15 +17,15 @@ export class SideMenuLayoutPage implements OnInit {
     },
     {
       title: 'My Feeds',
-      url: '/menu-layout/tab-layout/Outbox',
+      url: '/menu-layout/tab-layout/my-feeds',
       icon: 'newspaper',
     },
     { title: 'Saved', url: '/menu-layout/tab-layout/saved', icon: 'bookmarks' },
-    {
-      title: 'Circular',
-      url: '/menu-layout/tab-layout/announcement',
-      icon: 'document-text',
-    },
+    // {
+    //   title: 'Circular',
+    //   url: '/menu-layout/tab-layout/announcement',
+    //   icon: 'document-text',
+    // },
     { title: 'Help', url: '/folder/Trash', icon: 'help-circle' },
     { title: 'Signout', url: '/login', icon: 'log-out' },
   ];
@@ -41,7 +41,7 @@ export class SideMenuLayoutPage implements OnInit {
     if (routeLink === '/login') {
       this.showAlert();
     } else {
-      this.router.navigateByUrl(routeLink);
+      this.router.navigate([routeLink]);
     }
   }
 
@@ -57,16 +57,16 @@ export class SideMenuLayoutPage implements OnInit {
         {
           text: 'Yes',
           handler: async () => {
-            await this.storage.remove('userInfo');
+            await this.storage.clear();
             const toast = await this.toastController.create({
               message: 'Signout Successfully',
               duration: 2000,
               icon: 'checkmark-circle',
-              position: 'bottom',
+              position: 'top',
               color: 'success',
             });
             await toast.present();
-            this.router.navigateByUrl('/login');
+            this.router.navigate(['/login']);
           },
         },
       ],
@@ -75,9 +75,11 @@ export class SideMenuLayoutPage implements OnInit {
     await alert.present();
   }
 
-  ngOnInit() {
+  ionViewDidEnter() {
     this.storage.get('userInfo').then((res: any) => {
       this.userInfo = res;
     });
   }
+
+  ngOnInit() {}
 }

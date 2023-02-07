@@ -26,77 +26,108 @@
 </ion-header>
 
 <ion-content color="light">
-  <h4 class="ion-padding ion-no-margin">
-    Welcome back <ion-text color="primary">{{userInfo.name}}</ion-text>
-    <br />
-    <ion-note>Good afternoon</ion-note>
-  </h4>
-  <div class="container">
-    <ion-list class="post-container">
-      <ion-item lines="none">
-        <ion-avatar slot="start">
-          <img
-            alt="Silhouette of a person's head"
-            src="https://ionicframework.com/docs/img/demos/avatar.svg"
-          />
-        </ion-avatar>
-        <ion-label>
-          <h2>{{postList[0].postedBy}}</h2>
-          <p>{{postList[0].postedOn}}</p>
-        </ion-label>
-        <ion-icon slot="end" name="ellipsis-vertical"></ion-icon>
-      </ion-item>
-      <div
-        class="post-banner-bg"
-        style="
-          background-image: linear-gradient(
-            83.2deg,
-            rgba(150, 93, 233, 1) 10.8%,
-            rgba(99, 88, 238, 1) 94.3%
-          );
-        "
-      >
-        <h1>Result annoceumed</h1>
-      </div>
-      <div class="post-content" [innerHTML]="postList[0].postContent"></div>
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div>
+    <h4 class="ion-padding ion-no-margin">
+      Welcome back <ion-text color="primary">{{userInfo.name}}</ion-text>
+      <br />
+      <ion-note>Good afternoon</ion-note>
+    </h4>
+    <div class="container">
+      <ng-container *ngFor="let post of postList">
+        <ion-list class="post-container">
+          <ion-item lines="none">
+            <ion-avatar slot="start">
+              <img
+                alt="Silhouette of a person's head"
+                src="https://ionicframework.com/docs/img/demos/avatar.svg"
+              />
+            </ion-avatar>
+            <ion-label>
+              <h2>{{post.postedBy.name}}</h2>
+              <p>{{post.postedOn | date:'medium'}}</p>
+            </ion-label>
+            <ion-icon slot="end" name="ellipsis-vertical"></ion-icon>
+          </ion-item>
+          <div
+            routerLink="/menu-layout/post-view/{{post.id}}"
+            class="post-banner-bg"
+            [ngStyle]="{background: post.bgColor}"
+          >
+            <h2>{{post.title}}</h2>
+          </div>
 
-      <ion-item lines="none" class="action-item">
-        <ion-buttons slot="start">
-          <ion-button>
-            <ion-icon slot="icon-only" name="heart-outline"></ion-icon>
-          </ion-button>
-          <ion-button>
-            <ion-icon slot="icon-only" name="chatbubble-outline"></ion-icon>
-          </ion-button>
-          <ion-button>
-            <ion-icon slot="icon-only" name="navigate-outline"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-        <ion-buttons slot="end">
-          <ion-button>
-            <ion-icon
-              slot="icon-only"
-              name="document-attach-outline"
-            ></ion-icon>
-          </ion-button>
-          <ion-button>
-            <ion-icon slot="icon-only" name="bookmark-outline"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-item>
+          <ion-item lines="none" class="action-item">
+            <ion-buttons slot="start">
+              <ion-button (click)="likeButton(post)">
+                <ion-icon
+                  *ngIf="!post.likes[this.userInfo.id]"
+                  slot="icon-only"
+                  name="heart-outline"
+                ></ion-icon>
 
-      <div class="action-item-info">
-        <div>1 Likes</div>
-        <div class="row-item">
-          <div>10 comments</div>
-          <div class="spliter">|</div>
-          <div>10 share</div>
-          <div class="spliter">|</div>
-          <div>40 view</div>
-        </div>
-      </div>
-    </ion-list>
-    <ng-container *ngFor="let post of postList">
+                <ion-icon
+                  *ngIf="post.likes[this.userInfo.id]"
+                  slot="icon-only"
+                  name="heart"
+                  color="danger"
+                ></ion-icon>
+              </ion-button>
+              <ion-button>
+                <ion-icon slot="icon-only" name="chatbubble-outline"></ion-icon>
+              </ion-button>
+              <ion-button>
+                <ion-icon slot="icon-only" name="navigate-outline"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+            <ion-buttons slot="end">
+              <ion-button>
+                <ion-icon
+                  slot="icon-only"
+                  name="document-attach-outline"
+                ></ion-icon>
+              </ion-button>
+              <ion-button (click)="saveButton(post)">
+                <ion-icon
+                  *ngIf="!post.saved[this.userInfo.id]"
+                  slot="icon-only"
+                  name="bookmark-outline"
+                ></ion-icon>
+
+                <ion-icon
+                  *ngIf="post.saved[this.userInfo.id]"
+                  slot="icon-only"
+                  name="bookmark"
+                  color="warning"
+                ></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-item>
+
+          <div class="action-item-info">
+            <div>{{post.likes.count || '0'}} Likes</div>
+            <div class="row-item">
+              <div>10 comments</div>
+              <div class="spliter">|</div>
+              <div>10 share</div>
+              <div class="spliter">|</div>
+              <div>{{post.saved.count || '0'}} saved</div>
+            </div>
+          </div>
+        </ion-list>
+      </ng-container>
+
+      <!-- <ion-infinite-scroll (ionInfinite)="loadMore($event)">
+        <ion-infinite-scroll-content
+          loadingSpinner="bubbles"
+          loadingText="Loading more data..."
+        >
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll> -->
+
+      <!-- <ng-container *ngFor="let post of postList">
       <ion-list class="post-container">
         <ion-item lines="none">
           <ion-avatar slot="start">
@@ -150,6 +181,7 @@
           </div>
         </div>
       </ion-list>
-    </ng-container>
+    </ng-container> -->
+    </div>
   </div>
 </ion-content>

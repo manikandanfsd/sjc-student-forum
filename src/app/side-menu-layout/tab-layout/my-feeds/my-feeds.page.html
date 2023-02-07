@@ -14,17 +14,23 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content>
-  <ion-list *ngIf="savedPostList.length > 0">
-    <ion-item *ngFor="let item of savedPostList" detail="true" button>
-      <ion-icon name="bookmark" color="warning" slot="start"></ion-icon>
+
+<ion-content color="light">
+  <ion-list *ngIf="myPosts.length > 0">
+    <ion-item detail="true" button *ngFor="let item of myPosts">
       <ion-label>
         <h2>{{item.title}}</h2>
-        <p>{{item.postedBy.name}} on {{item.postedOn | date:'medium'}}</p>
+        <p>Posted on {{item.postedOn | date:'medium'}}</p>
+        <p>
+          <ion-note>{{item.likes.count || '0'}} Like</ion-note> |
+          <ion-note>{{item.saved.count || '0'}} Saved</ion-note> |
+          <ion-note>{{item.comments.length || '0'}} Comments</ion-note>
+        </p>
       </ion-label>
     </ion-item>
   </ion-list>
-  <div class="align-middle ion-padding" *ngIf="savedPostList.length===0">
+
+  <div class="align-middle ion-padding" *ngIf="myPosts.length===0">
     <img class="no-data-img" src="assets/No data-pana.svg" alt="" srcset="" />
     <ion-note>No Saved Post Found</ion-note>
   </div>

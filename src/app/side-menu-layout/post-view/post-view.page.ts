@@ -1,48 +1,25 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
+import { PostService } from 'src/app/services/post.service';
 import { Storage } from '@ionic/storage-angular';
 import { take } from 'rxjs';
-import { PostService } from 'src/app/services/post.service';
-
-import {
-  collection,
-  collectionData,
-  Firestore,
-  query,
-  where,
-  limit,
-  orderBy,
-  startAfter,
-  collectionChanges,
-  getDocs,
-} from '@angular/fire/firestore';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: 'app-post-view',
+  templateUrl: './post-view.page.html',
+  styleUrls: ['./post-view.page.scss'],
 })
-export class HomePage implements OnInit {
-  userInfo: any = {};
-  postList: any = [];
+export class PostViewPage implements OnInit {
   loadingInst: any;
-
+  postInfo: any = {};
+  userInfo: any = {};
   constructor(
-    private storage: Storage,
-    private postService: PostService,
+    private activatedRoute: ActivatedRoute,
     private loadingCtrl: LoadingController,
-    private firestore: Firestore
-  ) {
-    this.postList = [];
-  }
-
-  async showLoading() {
-    this.loadingInst = await this.loadingCtrl.create({
-      message: 'Loading...',
-      showBackdrop: true,
-    });
-    this.loadingInst.present();
-  }
+    private postService: PostService,
+    private storage: Storage
+  ) {}
 
   ionViewDidEnter() {
     this.storage.get('userInfo').then((res: any) => {
@@ -50,24 +27,24 @@ export class HomePage implements OnInit {
     });
   }
 
-  handleRefresh(event: any) {
-    event.target.complete();
-    this.getPostList();
+  async showLoading() {
+    this.loadingInst = await this.loadingCtrl.create({
+      message: 'Posting...',
+      showBackdrop: true,
+    });
+    this.loadingInst.present();
   }
 
-  async getPostList() {
+  async ngOnInit() {
     await this.showLoading();
+    const { postId } = this.activatedRoute.snapshot.params;
     this.postService
-      .getPost()
+      .getPostById(postId)
       .pipe(take(1))
       .subscribe((result) => {
-        this.postList = result;
+        this.postInfo = result;
         this.loadingInst.dismiss();
       });
-  }
-
-  ngOnInit() {
-    this.getPostList();
   }
 
   likeButton(post: any) {

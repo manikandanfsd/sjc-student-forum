@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button routerLink="/menu-layout">
+        <ion-icon size="large" slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Post View</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding1">
+  <ion-list class="post-container">
+    <ion-item lines="none">
+      <ion-avatar slot="start">
+        <img
+          alt="Silhouette of a person's head"
+          src="https://ionicframework.com/docs/img/demos/avatar.svg"
+        />
+      </ion-avatar>
+      <ion-label>
+        <h2>{{postInfo?.postedBy?.name}}</h2>
+        <p>{{postInfo?.postedOn | date:'medium'}}</p>
+      </ion-label>
+      <ion-icon slot="end" name="ellipsis-vertical"></ion-icon>
+    </ion-item>
+    <div class="post-banner-bg" [ngStyle]="{background: postInfo?.bgColor}">
+      <h2>{{postInfo.title}}</h2>
+    </div>
+
+    <quill-view
+      [content]="postInfo.description"
+      format="json"
+      theme="snow"
+    ></quill-view>
+
+    <ion-item lines="none" class="action-item">
+      <ion-buttons slot="start">
+        <ion-button (click)="likeButton(postInfo)">
+          <ion-icon
+            *ngIf="!(postInfo?.likes && postInfo?.likes[this.userInfo.id])"
+            slot="icon-only"
+            name="heart-outline"
+          ></ion-icon>
+
+          <ion-icon
+            *ngIf="(postInfo?.likes && postInfo?.likes[this.userInfo.id])"
+            slot="icon-only"
+            name="heart"
+            color="danger"
+          ></ion-icon>
+        </ion-button>
+        <ion-button>
+          <ion-icon slot="icon-only" name="chatbubble-outline"></ion-icon>
+        </ion-button>
+        <ion-button>
+          <ion-icon slot="icon-only" name="navigate-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button>
+          <ion-icon slot="icon-only" name="document-attach-outline"></ion-icon>
+        </ion-button>
+        <ion-button (click)="saveButton(postInfo)">
+          <ion-icon
+            *ngIf="!(postInfo?.saved && postInfo?.saved[this.userInfo.id])"
+            slot="icon-only"
+            name="bookmark-outline"
+          ></ion-icon>
+
+          <ion-icon
+            *ngIf="postInfo?.saved && postInfo?.saved[this.userInfo.id]"
+            slot="icon-only"
+            name="bookmark"
+            color="warning"
+          ></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+
+    <div class="action-item-info">
+      <div>{{postInfo?.likes?.count || '0'}} Likes</div>
+      <div class="row-item">
+        <div>10 comments</div>
+        <div class="spliter">|</div>
+        <div>10 share</div>
+        <div class="spliter">|</div>
+        <div>{{postInfo?.saved?.count || '0'}} saved</div>
+      </div>
+    </div>
+  </ion-list>
+</ion-content>
