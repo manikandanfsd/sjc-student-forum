@@ -83,6 +83,7 @@
               </ion-button>
             </ion-buttons>
             <ion-buttons slot="end">
+              <ion-note>{{post?.attachments?.length}} Files</ion-note>
               <ion-button>
                 <ion-icon
                   slot="icon-only"
@@ -106,14 +107,17 @@
             </ion-buttons>
           </ion-item>
 
-          <div class="action-item-info">
-            <div>{{post.likes.count || '0'}} Likes</div>
+          <div
+            class="action-item-info"
+            routerLink="/menu-layout/post-view/{{post.id}}"
+          >
+            <div>{{post?.likes?.count || '0'}} Likes</div>
             <div class="row-item">
-              <div>10 comments</div>
+              <div>{{post?.comments?.length}} Comments</div>
+              <!-- <div class="spliter">|</div>
+              <div>10 attachments</div> -->
               <div class="spliter">|</div>
-              <div>10 share</div>
-              <div class="spliter">|</div>
-              <div>{{post.saved.count || '0'}} saved</div>
+              <div>{{post?.saved?.count || '0'}} Saved</div>
             </div>
           </div>
         </ion-list>

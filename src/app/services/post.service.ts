@@ -19,11 +19,20 @@ import {
   startAt,
 } from '@angular/fire/firestore';
 
+import {
+  ref,
+  Storage,
+  UploadTaskSnapshot,
+  storageInstance$,
+  uploadBytesResumable,
+  getDownloadURL,
+} from '@angular/fire/storage';
+
 @Injectable({
   providedIn: 'root',
 })
 export class PostService {
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore, private storage: Storage) {}
 
   savePost(postInfo: any) {
     const postRef = collection(this.firestore, 'posts');
@@ -56,5 +65,26 @@ export class PostService {
   updatePost(post: any) {
     const postRef = doc(this.firestore, `posts/${post.id}`);
     return updateDoc(postRef, post);
+  }
+
+  fileUpload(files: any) {
+    const storageRef = ref(this.storage, files.name);
+    const uploadTask = uploadBytesResumable(storageRef, files);
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(progress, 'progress');
+      },
+      (error) => {
+        console.log(error.message, 'error.message');
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log('File available at', downloadURL);
+        });
+      }
+    );
   }
 }

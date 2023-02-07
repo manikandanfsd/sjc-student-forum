@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import {
+  getDownloadURL,
+  ref,
+  uploadBytesResumable,
+  Storage as FbStorage,
+} from '@angular/fire/storage';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -18,6 +24,9 @@ export class AddEditPostPage implements OnInit {
   isPreviewVisible: boolean = false;
   userInfo: any = {};
   postForm!: FormGroup;
+  files: any;
+  fileProcess: any = {};
+  fileInfoData: any = {};
   bgColors = [
     'linear-gradient(to right, #fa709a 0%, #fee140 100%)',
     'linear-gradient(to right, #6a11cb 0%, #2575fc 100%)',
@@ -57,7 +66,8 @@ export class AddEditPostPage implements OnInit {
     private toastController: ToastController,
     private router: Router,
     private storage: Storage,
-    private postService: PostService
+    private postService: PostService,
+    private fbStorage: FbStorage
   ) {
     this.postForm = this.formBuilder.group({
       title: ['', [Validators.required]],
@@ -114,6 +124,45 @@ export class AddEditPostPage implements OnInit {
     }
   }
 
+  fileChanges(event: any) {
+    this.files = event.target.files;
+  }
+
+  async uploadFiles() {
+    await this.showLoading();
+    this.fileInfoData = {};
+    for (const file of this.files) {
+      const storageRef = ref(this.fbStorage, '/sjc-student-forum/' + file.name);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          this.fileProcess[file.name] =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(this.fileProcess, 'this.fileProcess');
+        },
+        (error) => {
+          console.log(error.message, 'error.message');
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            this.fileInfoData[file.name] = {
+              downloadURL,
+              name: file.name,
+              type: file.type,
+              size: file.size,
+            };
+            console.log('File available at', Object.values(this.fileInfoData));
+
+            if (this.files.length === Object.values(this.fileInfoData).length) {
+              this.loadingInst.dismiss();
+            }
+          });
+        }
+      );
+    }
+  }
+
   async savePost() {
     this.postForm.markAllAsTouched();
     this.postForm.updateValueAndValidity();
@@ -121,6 +170,7 @@ export class AddEditPostPage implements OnInit {
     payload.postedBy = this.userInfo;
     payload.postedOn = new Date().toISOString();
     payload.updatedOn = new Date().toISOString();
+    payload.attachments = Object.values(this.fileInfoData);
     if (this.postForm.valid) {
       await this.showLoading();
       this.postService.savePost(payload).then((result) => {

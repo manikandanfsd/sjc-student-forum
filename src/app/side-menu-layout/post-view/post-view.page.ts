@@ -14,6 +14,7 @@ export class PostViewPage implements OnInit {
   loadingInst: any;
   postInfo: any = {};
   userInfo: any = {};
+  comment: any = '';
   constructor(
     private activatedRoute: ActivatedRoute,
     private loadingCtrl: LoadingController,
@@ -29,7 +30,7 @@ export class PostViewPage implements OnInit {
 
   async showLoading() {
     this.loadingInst = await this.loadingCtrl.create({
-      message: 'Posting...',
+      message: 'Loading...',
       showBackdrop: true,
     });
     this.loadingInst.present();
@@ -83,5 +84,21 @@ export class PostViewPage implements OnInit {
     this.postService.updatePost(post).then((result) => {
       console.log(result, 'save result');
     });
+  }
+
+  sendComment() {
+    console.log(this.comment);
+    if (this.comment) {
+      if (this.postInfo.comments) {
+        this.postInfo.comments.push({
+          text: this.comment,
+          userInfo: this.userInfo,
+        });
+      }
+      this.postService.updatePost(this.postInfo).then((result) => {
+        console.log(result, 'save result');
+        this.comment = '';
+      });
+    }
   }
 }

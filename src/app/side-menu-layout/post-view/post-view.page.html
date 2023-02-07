@@ -9,7 +9,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding1">
+<ion-content color="light">
   <ion-list class="post-container">
     <ion-item lines="none">
       <ion-avatar slot="start">
@@ -33,6 +33,20 @@
       format="json"
       theme="snow"
     ></quill-view>
+
+    <div class="ion-padding">
+      <a
+        target="_blank"
+        *ngFor="let file of postInfo?.attachments"
+        href="{{file.downloadURL}}"
+        download="{{file.name}}"
+      >
+        <ion-chip>
+          <ion-label>{{file.name}}</ion-label>
+          <ion-icon name="arrow-down-circle-outline"></ion-icon>
+        </ion-chip>
+      </a>
+    </div>
 
     <ion-item lines="none" class="action-item">
       <ion-buttons slot="start">
@@ -58,6 +72,7 @@
         </ion-button>
       </ion-buttons>
       <ion-buttons slot="end">
+        <ion-note>{{postInfo?.attachments?.length}} Files</ion-note>
         <ion-button>
           <ion-icon slot="icon-only" name="document-attach-outline"></ion-icon>
         </ion-button>
@@ -81,12 +96,48 @@
     <div class="action-item-info">
       <div>{{postInfo?.likes?.count || '0'}} Likes</div>
       <div class="row-item">
-        <div>10 comments</div>
-        <div class="spliter">|</div>
-        <div>10 share</div>
+        <div>{{postInfo?.comments?.length}} comments</div>
+        <!-- <div class="spliter">|</div>
+        <div>10 share</div> -->
         <div class="spliter">|</div>
         <div>{{postInfo?.saved?.count || '0'}} saved</div>
       </div>
     </div>
   </ion-list>
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-label>Comments</ion-label>
+    </ion-item-divider>
+    <ion-item *ngFor="let message of postInfo.comments">
+      <ion-avatar slot="start">
+        <img src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+      </ion-avatar>
+      <ion-label class="ion-text-wrap message-bubble">
+        <h4>{{ message.username || 'Manikandan' }}</h4>
+        <ion-note>{{ message.text }}</ion-note>
+      </ion-label>
+    </ion-item>
+  </ion-item-group>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-item lines="none">
+      <ion-input
+        placeholder="Enter comment"
+        [(ngModel)]="comment"
+        [clearInput]="true"
+      ></ion-input>
+      <ion-button
+        slot="end"
+        color="light"
+        size="default"
+        (click)="sendComment()"
+      >
+        <!-- <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        Send -->
+        <ion-icon name="send"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>

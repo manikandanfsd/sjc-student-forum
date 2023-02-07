@@ -56,6 +56,16 @@
 
     <br />
     <br />
+    <ion-label position="floating">Attachments</ion-label>
+    <ion-item fill="outline">
+      <ion-input multiple (change)="fileChanges($event)" type="file" clearInput>
+      </ion-input>
+      <ion-button slot="end" size="default" (click)="uploadFiles()">
+        <ion-icon name="cloud-upload-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <br />
     <ion-row>
       <ion-col>
         <ion-button

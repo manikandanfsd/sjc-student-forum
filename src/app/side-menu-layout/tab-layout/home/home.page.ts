@@ -62,6 +62,7 @@ export class HomePage implements OnInit {
       .pipe(take(1))
       .subscribe((result) => {
         this.postList = result;
+        console.log(this.postList, 'this.postList');
         this.loadingInst.dismiss();
       });
   }
