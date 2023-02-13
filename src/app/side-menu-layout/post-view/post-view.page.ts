@@ -63,7 +63,7 @@ export class PostViewPage implements OnInit {
       };
     }
     this.postService.updatePost(post).then((result) => {
-      console.log(result, 'like result');
+      console.log(result, 'Post Liked');
     });
   }
 
@@ -82,22 +82,22 @@ export class PostViewPage implements OnInit {
       };
     }
     this.postService.updatePost(post).then((result) => {
-      console.log(result, 'save result');
+      console.log(result, 'Post Saved ');
     });
   }
 
   sendComment() {
-    console.log(this.comment);
     if (this.comment) {
       if (this.postInfo.comments) {
         this.postInfo.comments.push({
           text: this.comment,
           userInfo: this.userInfo,
+          timestamp: new Date().toISOString(),
         });
       }
+      this.comment = '';
       this.postService.updatePost(this.postInfo).then((result) => {
-        console.log(result, 'save result');
-        this.comment = '';
+        console.log(result, 'Comment Posted');
       });
     }
   }

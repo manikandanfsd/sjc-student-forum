@@ -16,22 +16,135 @@
 </ion-header>
 
 <ion-content color="light">
-  <ion-list *ngIf="myPosts.length > 0">
-    <ion-item detail="true" button *ngFor="let item of myPosts">
-      <ion-label>
-        <h2>{{item.title}}</h2>
-        <p>Posted on {{item.postedOn | date:'medium'}}</p>
-        <p>
-          <ion-note>{{item.likes.count || '0'}} Like</ion-note> |
-          <ion-note>{{item.saved.count || '0'}} Saved</ion-note> |
-          <ion-note>{{item.comments.length || '0'}} Comments</ion-note>
-        </p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+  <div *ngIf="myPosts.length > 0">
+    <ng-container *ngFor="let post of myPosts">
+      <ion-list class="post-container">
+        <ion-item lines="full">
+          <ion-avatar slot="start" [ngStyle]="{background: '#7c5dfa'}">
+            <ion-text>{{post.postedBy.name.slice(0,2)}}</ion-text>
+          </ion-avatar>
+          <ion-label>
+            <h2>{{post.postedBy.name}} (You)</h2>
+            <p>{{post.postedOn | date:'medium'}}</p>
+          </ion-label>
+          <ion-icon
+            id="more-button-{{post.id}}"
+            slot="end"
+            name="ellipsis-vertical"
+          ></ion-icon>
+        </ion-item>
+
+        <ion-popover
+          trigger="more-button-{{post.id}}"
+          [dismissOnSelect]="true"
+          showBackdrop="false"
+          triggerAction="click"
+        >
+          <ng-template>
+            <ion-content>
+              <ion-item
+                [button]="true"
+                routerLink="/menu-layout/post-view/{{post.id}}"
+                >View Post</ion-item
+              >
+              <ion-item
+                [button]="true"
+                routerLink="/menu-layout/post-view/{{post.id}}"
+                >Comment</ion-item
+              >
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+        <div *ngIf="post.bgImg" routerLink="/menu-layout/post-view/{{post.id}}">
+          <p class="post-title">{{post.title}}</p>
+          <img class="post-image" src="{{post.bgImg}}" />
+        </div>
+        <div
+          *ngIf="!post.bgImg"
+          routerLink="/menu-layout/post-view/{{post.id}}"
+          class="post-banner-bg"
+          [ngStyle]="{background: post.bgColor}"
+        >
+          <h2>{{post.title}}</h2>
+        </div>
+
+        <ion-item lines="none" class="action-item">
+          <ion-buttons slot="start">
+            <ion-button (click)="likeButton(post)">
+              <ion-icon
+                *ngIf="!post.likes[this.userInfo.id]"
+                slot="icon-only"
+                name="heart-outline"
+              ></ion-icon>
+
+              <ion-icon
+                *ngIf="post.likes[this.userInfo.id]"
+                slot="icon-only"
+                name="heart"
+                color="danger"
+              ></ion-icon>
+            </ion-button>
+            <ion-button routerLink="/menu-layout/post-view/{{post.id}}">
+              <ion-icon slot="icon-only" name="chatbubble-outline"></ion-icon>
+            </ion-button>
+            <!-- <ion-button>
+              <ion-icon slot="icon-only" name="navigate-outline"></ion-icon>
+            </ion-button> -->
+          </ion-buttons>
+          <ion-buttons slot="end">
+            <ion-note>{{post?.attachments?.length}} Files</ion-note>
+            <ion-button>
+              <ion-icon
+                slot="icon-only"
+                name="document-attach-outline"
+              ></ion-icon>
+            </ion-button>
+            <ion-button (click)="saveButton(post)">
+              <ion-icon
+                *ngIf="!post.saved[this.userInfo.id]"
+                slot="icon-only"
+                name="bookmark-outline"
+              ></ion-icon>
+
+              <ion-icon
+                *ngIf="post.saved[this.userInfo.id]"
+                slot="icon-only"
+                name="bookmark"
+                color="warning"
+              ></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+
+        <div
+          class="action-item-info"
+          routerLink="/menu-layout/post-view/{{post.id}}"
+        >
+          <div>{{post?.likes?.count || '0'}} Likes</div>
+          <div class="row-item">
+            <div>{{post?.comments?.length}} Comments</div>
+            <!-- <div class="spliter">|</div>
+            <div>10 attachments</div> -->
+            <div class="spliter">|</div>
+            <div>{{post?.saved?.count || '0'}} Saved</div>
+          </div>
+        </div>
+      </ion-list>
+    </ng-container>
+  </div>
 
   <div class="align-middle ion-padding" *ngIf="myPosts.length===0">
     <img class="no-data-img" src="assets/No data-pana.svg" alt="" srcset="" />
-    <ion-note>No Saved Post Found</ion-note>
+    <ion-note>No Post Found</ion-note>
+    <br />
+    <ion-button
+      class="btn"
+      color="primary"
+      routerLink="/menu-layout/add-edit-post"
+    >
+      <ion-icon name="add-outline"></ion-icon>
+      Feed
+    </ion-button>
   </div>
 </ion-content>

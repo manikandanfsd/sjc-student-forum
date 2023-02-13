@@ -30,8 +30,7 @@ export class HomePage implements OnInit {
   constructor(
     private storage: Storage,
     private postService: PostService,
-    private loadingCtrl: LoadingController,
-    private firestore: Firestore
+    private loadingCtrl: LoadingController
   ) {
     this.postList = [];
   }
@@ -62,7 +61,6 @@ export class HomePage implements OnInit {
       .pipe(take(1))
       .subscribe((result) => {
         this.postList = result;
-        console.log(this.postList, 'this.postList');
         this.loadingInst.dismiss();
       });
   }
@@ -107,5 +105,10 @@ export class HomePage implements OnInit {
     this.postService.updatePost(post).then((result) => {
       console.log(result, 'save result');
     });
+  }
+
+  generateRandomColor() {
+    let color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+    return color;
   }
 }

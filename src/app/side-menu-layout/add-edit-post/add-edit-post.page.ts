@@ -27,15 +27,29 @@ export class AddEditPostPage implements OnInit {
   files: any;
   fileProcess: any = {};
   fileInfoData: any = {};
+  bannerImg: any;
   bgColors = [
+    'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    'linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%)',
     'linear-gradient(to right, #fa709a 0%, #fee140 100%)',
+    'linear-gradient(to top, #cd9cf2 0%, #f6f3ff 100%)',
     'linear-gradient(to right, #6a11cb 0%, #2575fc 100%)',
     'linear-gradient(to right, #11998e, #38ef7d)',
+    'linear-gradient(60deg, #abecd6 0%, #fbed96 100%)',
+    'linear-gradient(to top, #9795f0 0%, #fbc8d4 100%)',
     'linear-gradient(to top, #00c6fb 0%, #005bea 100%)',
     'linear-gradient(to top, #9795f0 0%, #fbc8d4 100%)',
-    'linear-gradient(to top, #ff0844 0%, #ffb199 100%)',
     'linear-gradient(to top, #0fd850 0%, #f9f047 100%)',
     'linear-gradient(-225deg, #3D4E81 0%, #5753C9 48%, #6E7FF3 100%)',
+    'linear-gradient(90deg, #00C9FF 0%, #92FE9D 100%)',
+    'linear-gradient(90deg, #FC466B 0%, #3F5EFB 100%)',
+    'linear-gradient(90deg, #3F2B96 0%, #A8C0FF 100%)',
+    'linear-gradient(90deg, #FDBB2D 0%, #22C1C3 100%)',
+    'linear-gradient(90deg, #0700b8 0%, #00ff88 100%)',
+    'linear-gradient(90deg, #d53369 0%, #daae51 100%)',
+    'linear-gradient(to top, #e6b980 0%, #eacda3 100%)',
+    'linear-gradient(-225deg, #5271C4 0%, #B19FFF 48%, #ECA1FE 100%)',
+    'linear-gradient( 68.3deg,  rgba(245,177,97,1) 0.4%, rgba(236,54,110,1) 100.2% )',
   ];
   selectedColor = this.bgColors[0];
   loadingInst: any;
@@ -96,9 +110,9 @@ export class AddEditPostPage implements OnInit {
     this.postForm.patchValue({ bgColor: colorCode });
   }
 
-  async showLoading() {
+  async showLoading(text = 'Posting...') {
     this.loadingInst = await this.loadingCtrl.create({
-      message: 'Posting...',
+      message: text,
       showBackdrop: true,
     });
     this.loadingInst.present();
@@ -128,8 +142,37 @@ export class AddEditPostPage implements OnInit {
     this.files = event.target.files;
   }
 
+  bannerImage(event: any) {
+    this.bannerImg = event.target.files[0];
+  }
+
+  async uploadBannerFile() {
+    await this.showLoading('Uploading...');
+    const storageRef = ref(
+      this.fbStorage,
+      '/sjc-student-forum/' + this.bannerImg.name
+    );
+    const uploadTask = uploadBytesResumable(storageRef, this.bannerImg);
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      },
+      (error) => {
+        console.log(error.message, 'error.message');
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          this.postForm.patchValue({ bgImg: downloadURL });
+          this.loadingInst.dismiss();
+        });
+      }
+    );
+  }
+
   async uploadFiles() {
-    await this.showLoading();
+    await this.showLoading('Uploading...');
     this.fileInfoData = {};
     for (const file of this.files) {
       const storageRef = ref(this.fbStorage, '/sjc-student-forum/' + file.name);

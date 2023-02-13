@@ -6,33 +6,19 @@ import {
   doc,
   docData,
   addDoc,
-  deleteDoc,
-  getDoc,
-  getDocs,
   updateDoc,
   Firestore,
   query,
   where,
   limit,
   orderBy,
-  startAfter,
-  startAt,
 } from '@angular/fire/firestore';
-
-import {
-  ref,
-  Storage,
-  UploadTaskSnapshot,
-  storageInstance$,
-  uploadBytesResumable,
-  getDownloadURL,
-} from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PostService {
-  constructor(private firestore: Firestore, private storage: Storage) {}
+  constructor(private firestore: Firestore) {}
 
   savePost(postInfo: any) {
     const postRef = collection(this.firestore, 'posts');
@@ -41,7 +27,8 @@ export class PostService {
 
   getPost(after = 0) {
     const postRef = collection(this.firestore, 'posts');
-    const queryObj = query(postRef, orderBy('postedOn', 'desc'), limit(25));
+    // const queryObj = query(postRef, orderBy('postedOn', 'desc'), limit(25));
+    const queryObj = query(postRef, orderBy('postedOn', 'desc'));
     return collectionData(queryObj, { idField: 'id' });
   }
 
@@ -67,24 +54,9 @@ export class PostService {
     return updateDoc(postRef, post);
   }
 
-  fileUpload(files: any) {
-    const storageRef = ref(this.storage, files.name);
-    const uploadTask = uploadBytesResumable(storageRef, files);
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(progress, 'progress');
-      },
-      (error) => {
-        console.log(error.message, 'error.message');
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log('File available at', downloadURL);
-        });
-      }
-    );
+  searchPost(searchTxt: any) {
+    const postRef = collection(this.firestore, 'posts');
+    const queryObj = query(postRef, where('title', '==', searchTxt));
+    return collectionData(queryObj, { idField: 'id' });
   }
 }

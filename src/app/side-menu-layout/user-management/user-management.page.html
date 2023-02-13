@@ -1,6 +1,6 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar color="primary">
-    <ion-title size="large" color="light"><b>SJC Student Forum</b></ion-title>
+    <ion-title size="large" color="light">User Management</ion-title>
     <ion-buttons slot="start">
       <ion-menu-toggle>
         <ion-button>
@@ -12,44 +12,33 @@
         </ion-button>
       </ion-menu-toggle>
     </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button
+        class="btn"
+        color="light"
+        routerLink="/menu-layout/add-edit-post"
+      >
+        <ion-icon name="add-outline"></ion-icon>
+        Add
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment value="{{activeTab}}" (ionChange)="handleChange($event)">
+      <ion-segment-button value="inactive">
+        <ion-label>Pending user</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="active">
+        <ion-label>Active user</ion-label>
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
 </ion-header>
 
-<!-- <ion-header [translucent]="true">
-  <ion-toolbar color="light">
-    <ion-searchbar
-      [debounce]="1000"
-      animated="true"
-      placeholder="Search"
-      inputmode="search"
-      type="text"
-      (ionChange)="filterValue($event)"
-    ></ion-searchbar>
-  </ion-toolbar>
-</ion-header> -->
-
-<!-- <ion-content class="ion-padding">
-  <div class="align-middle">
-    <img
-      class="no-data-img"
-      src="assets/File searching-cuate.svg"
-      alt=""
-      srcset=""
-    />
-    <ion-note>Search want you want</ion-note>
-  </div>
-</ion-content> -->
-
 <ion-content>
-  <ion-segment value="default">
-    <ion-segment-button value="default">
-      <ion-label>Pending user</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="segment">
-      <ion-label>Active user</ion-label>
-    </ion-segment-button>
-  </ion-segment>
-
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-list lines="">
     <!-- <ion-item-sliding *ngFor="let user of userList">
       <ion-item>

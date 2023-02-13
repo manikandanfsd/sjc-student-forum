@@ -26,7 +26,12 @@ export class SideMenuLayoutPage implements OnInit {
     //   url: '/menu-layout/tab-layout/announcement',
     //   icon: 'document-text',
     // },
-    { title: 'Help', url: '/folder/Trash', icon: 'help-circle' },
+    {
+      title: 'Users Management',
+      url: '/menu-layout/user-management',
+      icon: 'people',
+    },
+    { title: 'Help', url: '/menu-layout/help', icon: 'help-circle' },
     { title: 'Signout', url: '/login', icon: 'log-out' },
   ];
   userInfo: any = {};

@@ -2,20 +2,8 @@
   <ion-toolbar color="primary">
     <ion-title>Add New Post</ion-title>
     <ion-buttons slot="start">
-      <ion-button routerLink="/menu-layout/tab-layout/home">
-        <ion-icon
-          size="large"
-          slot="icon-only"
-          name="arrow-back-outline"
-        ></ion-icon>
-      </ion-button>
+      <ion-back-button></ion-back-button>
     </ion-buttons>
-
-    <!-- <ion-buttons slot="end">
-      <ion-button class="btn" color="light" (click)="isPreviewVisible=true">
-        <ion-icon slot="icon-only" name="newspaper-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
 
@@ -32,6 +20,18 @@
       ></div>
     </div>
     <br />
+    <ion-label position="floating">Banner Image </ion-label>
+    <ion-item fill="outline">
+      <ion-input
+        type="file"
+        clearInput
+        (change)="bannerImage($event)"
+        formControlName="bgImg"
+      ></ion-input>
+      <ion-button slot="end" size="default" (click)="uploadBannerFile()">
+        <ion-icon name="cloud-upload-outline" slot="icon-only"></ion-icon>
+      </ion-button> </ion-item
+    ><br />
     <ion-item fill="outline">
       <ion-label position="floating">Title</ion-label>
       <ion-textarea
@@ -112,14 +112,19 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
+      <div *ngIf="this.postForm.value.bgImg">
+        <p class="post-title">{{this.postForm.value.title}}</p>
+        <img class="post-image" src="{{this.postForm.value.bgImg}}" />
+      </div>
       <div
+        *ngIf="!this.postForm.value.bgImg"
+        routerLink="/menu-layout/post-view/{{this.postForm.value.id}}"
         class="post-banner-bg"
-        [ngStyle]="{background: this.postForm.value?.bgColor}"
+        [ngStyle]="{background: this.postForm.value.bgColor}"
       >
         <h2>{{this.postForm.value.title}}</h2>
       </div>
 
-      <!-- <quill-view-html [content]="myPostContent" theme="snow"></quill-view-html> -->
       <quill-view
         [content]="this.postForm.value.description"
         format="json"

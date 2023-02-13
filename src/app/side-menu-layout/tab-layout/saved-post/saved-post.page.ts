@@ -28,19 +28,62 @@ export class SavedPostPage implements OnInit {
     this.loadingInst.present();
   }
 
+  getSavedPost() {
+    this.postService
+      .getSavedPostByUser(this.userInfo.id)
+      .pipe(take(1))
+      .subscribe((result) => {
+        this.savedPostList = result;
+        this.loadingInst.dismiss();
+      });
+  }
+
   async ionViewDidEnter() {
     await this.showLoading();
     this.storage.get('userInfo').then((res: any) => {
       this.userInfo = res;
-      this.postService
-        .getSavedPostByUser(this.userInfo.id)
-        .pipe(take(1))
-        .subscribe((result) => {
-          this.savedPostList = result;
-          this.loadingInst.dismiss();
-        });
+      this.getSavedPost();
     });
   }
 
   ngOnInit() {}
+
+  likeButton(post: any) {
+    if (post.likes[this.userInfo.id]) {
+      post.likes = {
+        ...post.likes,
+        [this.userInfo.id]: false,
+        count: post.likes.count ? post.likes.count - 1 : 1,
+      };
+    } else {
+      post.likes = {
+        ...post.likes,
+        [this.userInfo.id]: true,
+        count: post.likes.count ? post.likes.count + 1 : 1,
+      };
+    }
+    this.postService.updatePost(post).then((result) => {
+      console.log(result, 'like result');
+    });
+  }
+
+  saveButton(post: any) {
+    if (post.saved[this.userInfo.id]) {
+      post.saved = {
+        ...post.saved,
+        [this.userInfo.id]: false,
+        count: post.saved.count ? post.saved.count - 1 : 1,
+      };
+    } else {
+      post.saved = {
+        ...post.saved,
+        [this.userInfo.id]: true,
+        count: post.saved.count ? post.saved.count + 1 : 1,
+      };
+    }
+    this.postService.updatePost(post).then((result) => {
+      console.log(result, 'save result');
+      this.getSavedPost();
+    });
+  }
 }

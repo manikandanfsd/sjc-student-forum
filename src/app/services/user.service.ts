@@ -22,4 +22,21 @@ export class UserService {
     const userRef = doc(this.firestore, 'users/' + userId);
     return docData(userRef, { idField: 'id' });
   }
+
+  getActiveUsers() {
+    const userRef = collection(this.firestore, 'users');
+    const whereCond = query(userRef, where('isActive', '==', true));
+    return collectionData(whereCond, { idField: 'id' });
+  }
+
+  getInActiveUsers() {
+    const userRef = collection(this.firestore, 'users');
+    const whereCond = query(userRef, where('isActive', '==', false));
+    return collectionData(whereCond, { idField: 'id' });
+  }
+
+  getAllUsers() {
+    const userRef = collection(this.firestore, 'users');
+    return collectionData(userRef, { idField: 'id' });
+  }
 }

@@ -22,12 +22,26 @@ const routes: Routes = [
             (m) => m.AddEditPostPageModule
           ),
       },
+      {
+        path: 'post-view/:postId',
+        loadChildren: () =>
+          import('./post-view/post-view.module').then(
+            (m) => m.PostViewPageModule
+          ),
+      },
+      {
+        path: 'help',
+        loadChildren: () =>
+          import('./help/help.module').then((m) => m.HelpPageModule),
+      },
+      {
+        path: 'user-management',
+        loadChildren: () =>
+          import('./user-management/user-management.module').then(
+            (m) => m.UserManagementPageModule
+          ),
+      },
     ],
-  },
-  {
-    path: 'post-view/:postId',
-    loadChildren: () =>
-      import('./post-view/post-view.module').then((m) => m.PostViewPageModule),
   },
 ];
 
