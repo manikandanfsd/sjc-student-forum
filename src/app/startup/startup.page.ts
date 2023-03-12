@@ -13,7 +13,6 @@ export class StartupPage implements OnInit {
 
   ngOnInit() {
     this.storage.get('userInfo').then((res: any) => {
-      console.log(res, 'res');
       if (res) {
         this.router.navigate(['/menu-layout']);
       }

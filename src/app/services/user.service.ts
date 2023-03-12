@@ -23,20 +23,26 @@ export class UserService {
     return docData(userRef, { idField: 'id' });
   }
 
-  getActiveUsers() {
+  getUsersByStatus(status: string) {
     const userRef = collection(this.firestore, 'users');
-    const whereCond = query(userRef, where('isActive', '==', true));
-    return collectionData(whereCond, { idField: 'id' });
-  }
-
-  getInActiveUsers() {
-    const userRef = collection(this.firestore, 'users');
-    const whereCond = query(userRef, where('isActive', '==', false));
+    const whereCond = query(userRef, where('status', '==', status));
     return collectionData(whereCond, { idField: 'id' });
   }
 
   getAllUsers() {
     const userRef = collection(this.firestore, 'users');
     return collectionData(userRef, { idField: 'id' });
+  }
+
+  updateUserStatus(userId: string, status: string) {
+    const userRef = doc(this.firestore, 'users/' + userId);
+    if (status === 'deleted') {
+      return deleteDoc(userRef);
+    }
+    const updateKey = `${status}On`;
+    return updateDoc(userRef, {
+      status,
+      [updateKey]: new Date().toISOString(),
+    });
   }
 }

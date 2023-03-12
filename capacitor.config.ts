@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.sjc.studuentforum',
-  appName: 'SJC Student Forum',
+  appName: 'Student Forum',
   webDir: 'www',
   bundledWebRuntime: false,
 };

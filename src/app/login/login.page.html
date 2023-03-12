@@ -17,7 +17,8 @@
           <ion-input
             size="small"
             placeholder="Enter email"
-            [clearOnEdit]="true"
+            [clearOnEdit]="false"
+            [clearInput]="true"
             formControlName="email"
           ></ion-input>
         </ion-item>
@@ -35,7 +36,8 @@
             size="small"
             type="{{passwordVisibility ? 'text' : 'password'}}"
             placeholder="Enter Password"
-            [clearOnEdit]="true"
+            [clearOnEdit]="false"
+            [clearInput]="true"
             formControlName="password"
           ></ion-input>
         </ion-item>

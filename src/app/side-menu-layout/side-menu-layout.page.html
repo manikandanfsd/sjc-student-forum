@@ -33,6 +33,7 @@
           *ngFor="let p of appPages; let i = index"
         >
           <ion-item
+            *ngIf="p.title === 'Users Management' ? userInfo?.role==='ADMIN'  : true"
             button
             routerDirection="root"
             (click)="handleAction(p.url)"

@@ -32,6 +32,12 @@ export class AuthService {
     return collectionData(whereCond, { idField: 'id' });
   }
 
+  checkEmailExits(email: any) {
+    const userRef = collection(this.firestore, 'users');
+    const whereCond = query(userRef, where('email', '==', email));
+    return collectionData(whereCond, { idField: 'id' });
+  }
+
   register(userInfo: any) {
     const userRef = collection(this.firestore, 'users');
     return addDoc(userRef, userInfo);

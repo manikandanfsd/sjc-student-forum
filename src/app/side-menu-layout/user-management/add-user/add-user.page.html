@@ -1,19 +1,14 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title> Register </ion-title>
+    <ion-title>Add New User</ion-title>
     <ion-buttons slot="start">
-      <ion-button routerLink="/startup">
-        <ion-icon
-          size="large"
-          slot="icon-only"
-          name="arrow-back-outline"
-        ></ion-icon>
-      </ion-button>
+      <ion-back-button></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 <ion-content class="ion-padding">
-  <form [formGroup]="registerForm" novalidate>
+  <form [formGroup]="userForm" novalidate>
     <div class="row-space">
       <ion-item fill="outline" shape="square">
         <ion-label position="floating">User Type</ion-label>
@@ -23,7 +18,9 @@
           formControlName="role"
           placeholder="Select User Type"
           required
+          (ionChange)="handleSelectChange()"
         >
+          <ion-select-option value="ADMIN">Admin</ion-select-option>
           <ion-select-option value="STAFF">Staff</ion-select-option>
           <ion-select-option value="STUDENT">Student</ion-select-option>
         </ion-select>
@@ -109,6 +106,12 @@
           interface=""
           placeholder="Select User Type"
         >
+          <ion-select-option
+            value="Office"
+            [disabled]="userForm.get('role')?.value === 'STUDENT'"
+          >
+            Office
+          </ion-select-option>
           <ion-select-option value="Computer Science"
             >Computer Science</ion-select-option
           >
@@ -126,7 +129,7 @@
         shape="round"
         expand="full"
         (click)="submitForm()"
-        >Join with us
+        >Create User
         <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
       </ion-button>
     </div>

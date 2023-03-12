@@ -9,7 +9,7 @@ import { Storage } from '@ionic/storage-angular';
   styleUrls: ['./side-menu-layout.page.scss'],
 })
 export class SideMenuLayoutPage implements OnInit {
-  public appPages = [
+  appPages = [
     {
       title: 'Home',
       url: '/menu-layout/tab-layout/home',

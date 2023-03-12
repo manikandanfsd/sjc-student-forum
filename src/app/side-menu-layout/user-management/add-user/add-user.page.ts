@@ -7,17 +7,17 @@ import {
   ToastController,
 } from '@ionic/angular';
 import { firstValueFrom } from 'rxjs';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.page.html',
-  styleUrls: ['./register.page.scss'],
+  selector: 'app-add-user',
+  templateUrl: './add-user.page.html',
+  styleUrls: ['./add-user.page.scss'],
 })
-export class RegisterPage implements OnInit {
+export class AddUserPage implements OnInit {
   passwordVisibility: boolean = false;
   loadingInst: any;
-  registerForm!: FormGroup;
+  userForm!: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,12 +27,12 @@ export class RegisterPage implements OnInit {
     private alertController: AlertController,
     private router: Router
   ) {
-    this.registerForm = this.formBuilder.group({
+    this.userForm = this.formBuilder.group({
       role: ['', [Validators.required]],
       name: ['', [Validators.required]],
       idNo: ['', [Validators.required]],
       email: ['', [Validators.required]],
-      status: ['pending', [Validators.required]],
+      status: ['active', [Validators.required]],
       designation: ['', [Validators.required]],
       department: ['', [Validators.required]],
       password: ['', [Validators.required]],
@@ -49,17 +49,21 @@ export class RegisterPage implements OnInit {
     this.loadingInst.present();
   }
 
-  async presentAlert() {
-    const alert = await this.alertController.create({
-      header: 'Register Failed',
-      message: 'Email already in use. Please try again with a different email.',
-      buttons: ['OK'],
-    });
-    alert.present();
+  handleSelectChange() {
+    this.userForm.get('department')?.setValue('');
   }
 
   handlePasswordToggle() {
     this.passwordVisibility = !this.passwordVisibility;
+  }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Add User Failed',
+      message: 'Email already in use. Please try again with a different email.',
+      buttons: ['OK'],
+    });
+    alert.present();
   }
 
   async presentToast() {
@@ -72,20 +76,19 @@ export class RegisterPage implements OnInit {
     });
     await toast.present();
   }
-
   async submitForm() {
-    this.registerForm.markAllAsTouched();
-    this.registerForm.updateValueAndValidity();
-    if (this.registerForm.valid) {
+    this.userForm.markAllAsTouched();
+    this.userForm.updateValueAndValidity();
+    if (this.userForm.valid) {
       this.showLoading();
       const emailAlreadyExits = await firstValueFrom(
-        this.authService.checkEmailExits(this.registerForm.value.email)
+        this.authService.checkEmailExits(this.userForm.value.email)
       );
       if (emailAlreadyExits && emailAlreadyExits.length > 0) {
         this.loadingInst.dismiss();
         this.presentAlert();
       } else {
-        this.authService.register(this.registerForm.value).then((result) => {
+        this.authService.register(this.userForm.value).then((result) => {
           this.loadingInst.dismiss();
           this.router.navigate(['/login']);
           this.presentToast();

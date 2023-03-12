@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoadingController } from '@ionic/angular';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -10,41 +11,47 @@ export class UserManagementPage implements OnInit {
   activeUserList: any = [];
   inActiveUserList: any = [];
   userList: any = [];
-  activeTab: any = 'inactive';
-  constructor(private userService: UserService) {}
+  activeTab: any = 'pending';
+  isLoading: boolean = false;
+  loadingInst: any;
+  constructor(
+    private userService: UserService,
+    private loadingCtrl: LoadingController
+  ) {}
 
   ngOnInit() {
-    this.getActiveUsers();
-    this.getInActiveUsers();
+    this.getUsersByStatus(this.activeTab);
+  }
+
+  async showLoading() {
+    this.loadingInst = await this.loadingCtrl.create({
+      message: 'Loading...',
+    });
+    this.loadingInst.present();
   }
 
   handleChange(e: any) {
     this.activeTab = e.target.value;
-    if (this.activeTab === 'active') {
-      this.getActiveUsers();
-    } else {
-      this.getInActiveUsers();
-    }
+    this.getUsersByStatus(this.activeTab);
   }
 
-  getActiveUsers() {
-    this.userService.getActiveUsers().subscribe((result) => {
+  getUsersByStatus(status: string) {
+    this.isLoading = true;
+    this.userService.getUsersByStatus(status).subscribe((result) => {
       this.userList = result;
+      this.isLoading = false;
     });
   }
 
-  getInActiveUsers() {
-    this.userService.getAllUsers().subscribe((result) => {
-      this.userList = result;
+  async updateUserStatus(userId: string, status: string) {
+    await this.showLoading();
+    this.userService.updateUserStatus(userId, status).then((result) => {
+      this.loadingInst.dismiss();
     });
   }
 
   handleRefresh(event: any) {
-    if (this.activeTab === 'active') {
-      this.getActiveUsers();
-    } else {
-      this.getInActiveUsers();
-    }
+    this.getUsersByStatus(this.activeTab);
     event.target.complete();
   }
 }

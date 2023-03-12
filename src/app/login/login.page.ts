@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
+import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -42,11 +43,10 @@ export class LoginPage implements OnInit {
 
   async presentAlert() {
     const alert = await this.alertController.create({
-      header: 'Login',
+      header: 'Login Failed',
       message: 'Invalid email & password',
       buttons: ['OK'],
     });
-
     alert.present();
   }
 
@@ -56,25 +56,27 @@ export class LoginPage implements OnInit {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       this.showLoading();
-      this.authService.login(email, password).subscribe(async (result: any) => {
-        this.loadingInst.dismiss();
-        if (result && result.length > 0) {
-          await this.storage.set('userInfo', {
-            name: result[0].name,
-            email: result[0].email,
-            role: result[0].role,
-            idNo: result[0].idNo,
-            id: result[0].id,
-          });
-          this.loginForm.reset();
-          this.router.navigate([
-            '/menu-layout',
-            { state: { timestamp: new Date().toTimeString() } },
-          ]);
-        } else {
-          this.presentAlert();
+      firstValueFrom(this.authService.login(email, password)).then(
+        async (result: any) => {
+          this.loadingInst.dismiss();
+          if (result && result.length > 0) {
+            await this.storage.set('userInfo', {
+              name: result[0].name,
+              email: result[0].email,
+              role: result[0].role,
+              idNo: result[0].idNo,
+              id: result[0].id,
+            });
+            this.loginForm.reset();
+            this.router.navigate([
+              '/menu-layout',
+              { state: { timestamp: new Date().toTimeString() } },
+            ]);
+          } else {
+            this.presentAlert();
+          }
         }
-      });
+      );
     }
   }
 

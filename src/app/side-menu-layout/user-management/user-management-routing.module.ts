@@ -6,8 +6,13 @@ import { UserManagementPage } from './user-management.page';
 const routes: Routes = [
   {
     path: '',
-    component: UserManagementPage
-  }
+    component: UserManagementPage,
+  },
+  {
+    path: 'add-user',
+    loadChildren: () =>
+      import('./add-user/add-user.module').then((m) => m.AddUserPageModule),
+  },
 ];
 
 @NgModule({
