@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
-    <ion-title size="large" color="light"><b>SJC Student Forum</b></ion-title>
+    <ion-title size="large" color="light"><b>Student Forum</b></ion-title>
     <ion-buttons slot="start">
       <ion-menu-toggle>
         <ion-button>
@@ -49,16 +49,21 @@
       srcset=""
     />
     <ion-note>
-      <h5 class="text-center">
+      <h6 class="text-center">
         We're sorry, we couldn't find any results for your search.
-      </h5>
+      </h6>
     </ion-note>
   </div>
 
   <ng-container *ngIf="!searching">
-    <ion-item *ngFor="let result of searchResult" detail="true">
+    <ion-item
+      *ngFor="let post of searchResult"
+      detail="true"
+      button
+      routerLink="/menu-layout/post-view/{{post.id}}"
+    >
       <ion-label class="ion-text-wrap">
-        <h2>{{result.title}}</h2>
+        <h2>{{post.title}}</h2>
       </ion-label>
     </ion-item>
   </ng-container>

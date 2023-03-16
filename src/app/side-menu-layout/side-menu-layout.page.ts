@@ -53,7 +53,7 @@ export class SideMenuLayoutPage implements OnInit {
   async showAlert() {
     const alert = await this.alertController.create({
       header: 'Signout',
-      subHeader: 'Are you sure want to do ?',
+      subHeader: 'Are you sure you want to Signout?',
       buttons: [
         {
           text: 'No',

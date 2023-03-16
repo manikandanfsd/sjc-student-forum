@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title size="large" color="light"><b>SJC Student Forum</b></ion-title>
+    <ion-title size="large" color="light"><b>Student Forum</b></ion-title>
     <ion-buttons slot="start">
       <ion-menu-toggle>
         <ion-button>
@@ -33,10 +33,10 @@
     <h4 class="ion-padding ion-no-margin">
       Welcome back <ion-text color="primary">{{userInfo.name}}</ion-text>
       <br />
-      <ion-note>Good afternoon</ion-note>
+      <ion-note>{{getGreeting()}}</ion-note>
     </h4>
     <div class="container">
-      <ng-container *ngFor="let post of postList">
+      <ng-container *ngFor="let post of postList;let index=index">
         <ion-list class="post-container">
           <ion-item lines="full">
             <ion-avatar slot="start" [ngStyle]="{background: '#7c5dfa'}">
@@ -71,6 +71,14 @@
                   routerLink="/menu-layout/post-view/{{post.id}}"
                   >Comment</ion-item
                 >
+
+                <ion-item
+                  *ngIf="userInfo?.role==='ADMIN'"
+                  [button]="true"
+                  (click)="deletePost(post,index)"
+                >
+                  <ion-text color="danger"> Delete </ion-text>
+                </ion-item>
               </ion-content>
             </ng-template>
           </ion-popover>

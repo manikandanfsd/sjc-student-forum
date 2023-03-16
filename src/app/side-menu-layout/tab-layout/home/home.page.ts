@@ -1,21 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { take } from 'rxjs';
 import { PostService } from 'src/app/services/post.service';
-
-import {
-  collection,
-  collectionData,
-  Firestore,
-  query,
-  where,
-  limit,
-  orderBy,
-  startAfter,
-  collectionChanges,
-  getDocs,
-} from '@angular/fire/firestore';
+import { ref, Storage as FbStorage, deleteObject } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-home',
@@ -30,9 +18,21 @@ export class HomePage implements OnInit {
   constructor(
     private storage: Storage,
     private postService: PostService,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private toastController: ToastController,
+    private fbStorage: FbStorage
   ) {
     this.postList = [];
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Success! The post has been deleted.',
+      duration: 2000,
+      position: 'top',
+      color: 'success',
+    });
+    await toast.present();
   }
 
   async showLoading() {
@@ -47,6 +47,19 @@ export class HomePage implements OnInit {
     this.storage.get('userInfo').then((res: any) => {
       this.userInfo = res;
     });
+  }
+
+  getGreeting() {
+    const currentHour = new Date().getHours();
+    let greeting = '';
+    if (currentHour >= 0 && currentHour < 12) {
+      greeting = 'Good morning';
+    } else if (currentHour >= 12 && currentHour < 18) {
+      greeting = 'Good afternoon';
+    } else {
+      greeting = 'Good evening';
+    }
+    return greeting;
   }
 
   handleRefresh(event: any) {
@@ -85,6 +98,31 @@ export class HomePage implements OnInit {
     }
     this.postService.updatePost(post).then((result) => {
       console.log(result, 'like result');
+    });
+  }
+
+  async deletePost(post: any, index: number) {
+    let attachments: any = [];
+    await this.showLoading();
+    if (post.bgImg) {
+      attachments = [post.bgImg.downloadURL];
+    }
+    if (post?.attachments && post?.attachments?.length > 0) {
+      const attachUrls = post?.attachments.map((item: any) => item.downloadURL);
+      attachments = [...attachments, ...attachUrls];
+    }
+    if (attachments.length > 0) {
+      attachments.forEach(async (url: any) => {
+        const desertRef = ref(this.fbStorage, url);
+        deleteObject(desertRef).then((res) => {
+          console.log('deleted');
+        });
+      });
+    }
+    this.postService.deletePost(post.id).then(async (res) => {
+      this.loadingInst.dismiss();
+      this.postList.splice(index, 1);
+      await this.presentToast();
     });
   }
 

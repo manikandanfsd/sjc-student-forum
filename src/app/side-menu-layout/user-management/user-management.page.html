@@ -23,26 +23,6 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-toolbar>
-    <ion-segment value="{{activeTab}}" (ionChange)="handleChange($event)">
-      <ion-segment-button value="pending" layout="icon-top">
-        <ion-label class="segment-label" color="warning">Pending</ion-label>
-        <ion-icon color="warning" name="help-circle-outline"></ion-icon>
-      </ion-segment-button>
-      <ion-segment-button value="active" layout="icon-top">
-        <ion-label class="segment-label" color="success">Active</ion-label>
-        <ion-icon color="success" name="shield-checkmark-outline"></ion-icon>
-      </ion-segment-button>
-      <ion-segment-button value="spam" layout="icon-top">
-        <ion-label class="segment-label" color="danger">Spam </ion-label>
-        <ion-icon color="danger" name="warning-outline"></ion-icon>
-      </ion-segment-button>
-      <ion-segment-button value="inactive" layout="icon-top">
-        <ion-label class="segment-label" color="medium">InActive</ion-label>
-        <ion-icon color="medium" name="information-circle-outline"></ion-icon>
-      </ion-segment-button>
-    </ion-segment>
-  </ion-toolbar>
 </ion-header>
 
 <ion-content>
@@ -57,7 +37,7 @@
         alt=""
         srcset=""
       />
-      <ion-note>Search want you want</ion-note>
+      <ion-note>No {{activeTab}} user found</ion-note>
     </div>
   </ng-container>
   <ion-list lines="">
@@ -153,3 +133,30 @@
     </ng-container>
   </ion-list>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-segment
+      value="{{activeTab}}"
+      (ionChange)="handleChange($event)"
+      color="primary"
+    >
+      <ion-segment-button value="pending" layout="icon-top">
+        <ion-label class="segment-label" color="warning">Pending</ion-label>
+        <ion-icon color="warning" name="help-circle-outline"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="active" layout="icon-top">
+        <ion-label class="segment-label" color="success">Active</ion-label>
+        <ion-icon color="success" name="shield-checkmark-outline"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="spam" layout="icon-top">
+        <ion-label class="segment-label" color="danger">Spam </ion-label>
+        <ion-icon color="danger" name="warning-outline"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="inactive" layout="icon-top">
+        <ion-label class="segment-label" color="medium">InActive</ion-label>
+        <ion-icon color="medium" name="information-circle-outline"></ion-icon>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-footer>

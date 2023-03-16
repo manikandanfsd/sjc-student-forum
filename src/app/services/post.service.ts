@@ -12,6 +12,7 @@ import {
   where,
   limit,
   orderBy,
+  deleteDoc,
 } from '@angular/fire/firestore';
 
 @Injectable({
@@ -58,5 +59,10 @@ export class PostService {
     const postRef = collection(this.firestore, 'posts');
     const queryObj = query(postRef, where('title', '==', searchTxt));
     return collectionData(queryObj, { idField: 'id' });
+  }
+
+  deletePost(id: any) {
+    const postRef = doc(this.firestore, `posts/${id}`);
+    return deleteDoc(postRef);
   }
 }

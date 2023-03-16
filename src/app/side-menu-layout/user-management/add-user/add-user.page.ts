@@ -88,9 +88,14 @@ export class AddUserPage implements OnInit {
         this.loadingInst.dismiss();
         this.presentAlert();
       } else {
-        this.authService.register(this.userForm.value).then((result) => {
+        const payload = {
+          ...this.userForm.value,
+          email: this.userForm.value.email.toLowerCase(),
+        };
+        this.authService.register(payload).then((result) => {
+          this.userForm.reset();
           this.loadingInst.dismiss();
-          this.router.navigate(['/login']);
+          this.router.navigate(['/menu-layout/user-management']);
           this.presentToast();
         });
       }

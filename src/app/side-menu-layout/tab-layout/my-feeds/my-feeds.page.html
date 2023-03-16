@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
-    <ion-title size="large" color="light"><b>SJC Student Forum</b></ion-title>
+    <ion-title size="large" color="light"><b>Student Forum</b></ion-title>
     <ion-buttons slot="start">
       <ion-menu-toggle>
         <ion-button>
@@ -17,7 +17,7 @@
 
 <ion-content color="light">
   <div *ngIf="myPosts.length > 0">
-    <ng-container *ngFor="let post of myPosts">
+    <ng-container *ngFor="let post of myPosts;let index = index">
       <ion-list class="post-container">
         <ion-item lines="full">
           <ion-avatar slot="start" [ngStyle]="{background: '#7c5dfa'}">
@@ -51,6 +51,12 @@
                 [button]="true"
                 routerLink="/menu-layout/post-view/{{post.id}}"
                 >Comment</ion-item
+              >
+              <ion-item
+                color="danger"
+                [button]="true"
+                (click)="deletePost(post,index)"
+                >Delete</ion-item
               >
             </ion-content>
           </ng-template>

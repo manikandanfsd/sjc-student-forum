@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
 import { PostService } from 'src/app/services/post.service';
 import { Storage } from '@ionic/storage-angular';
 import { take } from 'rxjs';
+import { ref, Storage as FbStorage, deleteObject } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-my-feeds',
@@ -17,8 +18,20 @@ export class MyFeedsPage implements OnInit {
   constructor(
     private storage: Storage,
     private postService: PostService,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private toastController: ToastController,
+    private fbStorage: FbStorage
   ) {}
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Success! The post has been deleted.',
+      duration: 2000,
+      position: 'top',
+      color: 'success',
+    });
+    await toast.present();
+  }
 
   async showLoading() {
     this.loadingInst = await this.loadingCtrl.create({
@@ -59,6 +72,31 @@ export class MyFeedsPage implements OnInit {
     }
     this.postService.updatePost(post).then((result) => {
       console.log(result, 'like result');
+    });
+  }
+
+  async deletePost(post: any, index: number) {
+    let attachments: any = [];
+    await this.showLoading();
+    if (post.bgImg) {
+      attachments = [post.bgImg.downloadURL];
+    }
+    if (post?.attachments && post?.attachments?.length > 0) {
+      const attachUrls = post?.attachments.map((item: any) => item.downloadURL);
+      attachments = [...attachments, ...attachUrls];
+    }
+    if (attachments.length > 0) {
+      attachments.forEach(async (url: any) => {
+        const desertRef = ref(this.fbStorage, url);
+        deleteObject(desertRef).then((res) => {
+          console.log('deleted');
+        });
+      });
+    }
+    this.postService.deletePost(post.id).then(async (res) => {
+      this.loadingInst.dismiss();
+      this.myPosts.splice(index, 1);
+      await this.presentToast();
     });
   }
 

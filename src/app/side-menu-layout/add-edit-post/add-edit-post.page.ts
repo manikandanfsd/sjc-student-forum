@@ -216,10 +216,11 @@ export class AddEditPostPage implements OnInit {
     payload.attachments = Object.values(this.fileInfoData);
     if (this.postForm.valid) {
       await this.showLoading();
+      this.postForm.reset();
       this.postService.savePost(payload).then((result) => {
         this.loadingInst.dismiss();
         this.router.navigate([
-          '/menu-layout',
+          '/menu-layout/tab-layout/',
           { state: { timestamp: new Date().toTimeString() } },
         ]);
         this.presentToast();

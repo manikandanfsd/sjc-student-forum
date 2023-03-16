@@ -6,6 +6,17 @@ import { Storage } from '@ionic/storage-angular';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
+const errorMessageMapper: any = {
+  invalid: 'Invalid email & password',
+  inactive:
+    'Your account is currently inactive. Please contact support for assistance.',
+  pending:
+    'Your account is still pending approval. Contact support for assistance.',
+  deleted:
+    'Your account has been disabled. Please contact support for assistance.',
+  spam: 'Account flagged for spam. Contact support for help.',
+};
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -41,10 +52,10 @@ export class LoginPage implements OnInit {
     this.loadingInst.present();
   }
 
-  async presentAlert() {
+  async presentAlert(alertType: any = 'invalid') {
     const alert = await this.alertController.create({
       header: 'Login Failed',
-      message: 'Invalid email & password',
+      message: errorMessageMapper[alertType],
       buttons: ['OK'],
     });
     alert.present();
@@ -56,27 +67,32 @@ export class LoginPage implements OnInit {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       this.showLoading();
-      firstValueFrom(this.authService.login(email, password)).then(
-        async (result: any) => {
-          this.loadingInst.dismiss();
-          if (result && result.length > 0) {
+      firstValueFrom(
+        this.authService.login(email?.toLowerCase(), password)
+      ).then(async (result: any) => {
+        this.loadingInst.dismiss();
+        if (result && result.length > 0) {
+          const { name, email, role, idNo, id, status } = result[0];
+          if (status === 'active') {
             await this.storage.set('userInfo', {
-              name: result[0].name,
-              email: result[0].email,
-              role: result[0].role,
-              idNo: result[0].idNo,
-              id: result[0].id,
+              name: name,
+              email: email,
+              role: role,
+              idNo: idNo,
+              id: id,
             });
             this.loginForm.reset();
             this.router.navigate([
-              '/menu-layout',
+              '/menu-layout/tab-layout/home',
               { state: { timestamp: new Date().toTimeString() } },
             ]);
           } else {
-            this.presentAlert();
+            this.presentAlert(status);
           }
+        } else {
+          this.presentAlert();
         }
-      );
+      });
     }
   }
 

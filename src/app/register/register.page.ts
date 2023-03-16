@@ -8,6 +8,7 @@ import {
 } from '@ionic/angular';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { StatusBar, Style } from '@capacitor/status-bar';
 
 @Component({
   selector: 'app-register',
@@ -39,7 +40,12 @@ export class RegisterPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (StatusBar) {
+      StatusBar.setBackgroundColor({ color: '#7c5dfa' });
+      StatusBar.setStyle({ style: Style.Dark });
+    }
+  }
 
   async showLoading() {
     this.loadingInst = await this.loadingCtrl.create({
@@ -79,13 +85,20 @@ export class RegisterPage implements OnInit {
     if (this.registerForm.valid) {
       this.showLoading();
       const emailAlreadyExits = await firstValueFrom(
-        this.authService.checkEmailExits(this.registerForm.value.email)
+        this.authService.checkEmailExits(
+          this.registerForm?.value?.email?.toLowerCase()
+        )
       );
       if (emailAlreadyExits && emailAlreadyExits.length > 0) {
         this.loadingInst.dismiss();
         this.presentAlert();
       } else {
-        this.authService.register(this.registerForm.value).then((result) => {
+        const payload = {
+          ...this.registerForm.value,
+          email: this.registerForm.value.email.toLowerCase(),
+        };
+        this.authService.register(payload).then((result) => {
+          this.registerForm.reset();
           this.loadingInst.dismiss();
           this.router.navigate(['/login']);
           this.presentToast();
