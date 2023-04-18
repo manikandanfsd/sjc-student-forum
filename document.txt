@@ -46,9 +46,9 @@
 
     cordova-res android --skip-config --copy
 
-    ionic capacitor run android --l --external
+    running cmd => ionic capacitor run android --l --external
 
-    ionic capacitor build android
+    to create apk file => student forum
 
 
 Ionic lifecycle
